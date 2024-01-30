@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.icon{
+  @apply mt-1 inline-block h-7 w-7 transition bg-[url(/icons.webp)]
+}
+
+.stat-value{
+  @apply text-2xl
+}
+.stat-title{
+  @apply text-sm
+}
+
+.detailed-ov{
+  @apply flex justify-between py-4
+}
+
+.detailed-ov-key{
+  @apply text-base font-normal opacity-75 flex-grow
+}
+
+.detailed-ov-value{
+  @apply text-base font-semibold
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* :root {
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+} */
