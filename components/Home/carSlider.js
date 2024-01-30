@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSwipeable } from 'react-swipeable';
 
-export default function CarSlider() {
-  const cars = [1, 2, 3, 4, 5, 6];
+export default function CarSlider(props) {
+  const cars = [...props.cars];
   const [current, updateCurrent] = useState(0);
 
   const handleNext = () => {
@@ -34,10 +34,10 @@ export default function CarSlider() {
   }, [current]);
 
   return (
-    <main className="relative max-w-6xl mx-auto">
+    <div className="relative my-10 max-w-6xl mx-auto">
       <div className="slider overflow-hidden">
         <div className="flex justify-between items-end px-2">
-          <h2 className="text-2xl font-semibold text-white">Ghost Yard's</h2>
+          <h2 className="text-2xl font-semibold text-white">{props.title}</h2>
           <Link className="text-sm" href="/">See More</Link>
         </div>
         <div
@@ -47,14 +47,14 @@ export default function CarSlider() {
           {cars.map((car, index) => (
             <div key={index} className="w-1/4 flex-shrink-0 ">
               <CarCard
-                img=""
-                title="Toyota Camry G Limited Edition 2016 jkhsd fj"
-                price={index}
-                year="2008"
-                registraition="Lahore"
-                mileage="16,000"
-                engine="Petrol"
-                time="2 Days"
+                imgs={car.gallery[car.galleryIndex]}
+                title={car.title}
+                price={car.price}
+                year={car.year}
+                registraition={car.registraition}
+                mileage={car.mileage}
+                engine={car.engine}
+                time={car.date}
               />
             </div>
           ))}
@@ -71,6 +71,6 @@ export default function CarSlider() {
        
        
       </div>
-    </main>
+    </div>
   );
 }
