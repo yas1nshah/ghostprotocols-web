@@ -38,20 +38,22 @@ const CarGallery = (props) => {
   return (
     
       
-      <div className="gallery relative overflow-hidden aspect-video w-full rounded-xl bg-primary">
+      <div className="gallery relative overflow-hidden aspect-video w-full rounded-xl bg-primary-light dark:bg-primary">
         <div {...handlers} className="images flex w-full h-full overflow-hidden">
-          {props.images.map((img, index) => (
+          {props.images.map((img, index) => {
+            const newLink = img.replace("/media", "")
+            return (
             <Image
             draggable="false"
               key={index}
               className="w-full h-full object-cover flex-shrink-0 flex-grow-0 transition-all ease-out duration-500"
               style={{ transform: `translateX(${currentImgIndex * -100}%)` }}
-              src={img}
+              src={`https://images.tixy.pk${newLink}`}
               width={500}
               height={500}
               alt="Car Image"
             />
-          ))}
+          )})}
         </div>
         <div onClick={handlePrev} className='hover:bg-black hover:bg-opacity-50 transition-all ease-in flex items-center p-3 absolute left-0 top-0 h-full'>
           <i className="icon" style={{ backgroundPosition: '-60px -30px' }}></i>

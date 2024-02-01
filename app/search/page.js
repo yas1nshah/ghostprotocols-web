@@ -1,13 +1,33 @@
-
+// 'use client'
 import React from 'react';
 import { NextRequest } from 'next/server';
 import Link from 'next/link';
 import SideBarContent from '@/components/search/sideBar';
 import CarCard from '@/components/search/carCard';
+import urls from '@/static/urls';
+import formatAmount from '@/utils/foramt-price';
+import formatTimeDifference from '@/utils/format-date';
+import CarResult from '@/components/search/carResult';
 
+import ActiveFilters from '@/components/search/ActiveFilters';
+import Pagination from '@/components/search/Pagination';
+// async function getData(keyword) {
+//   const res = await fetch(`${urls.APIURL}/inventory?keyword=${keyword}`,{ next: { revalidate: 5 } })
 
-const SearchPage = ({ params, searchParams }) => {
-  const { keyword } = searchParams;
+ 
+//   if (!res.ok) {
+//     throw new Error('Failed to fetch data')
+//   }
+  
+//   // console.log(res.json.toString())
+//   return res.json()
+// }
+
+const SearchPage = async ({ params, searchParams }) => {
+  const { keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page  } = searchParams;
+  
+
+  // const cars  = await getData(keyword)
 
   return (
     <main className="relative max-w-6xl mx-auto
@@ -24,24 +44,42 @@ const SearchPage = ({ params, searchParams }) => {
 
       
       <div className="flex">
-        <section className="sidebar w-1/4 flex-shrink-0 bg-primary m-2 p-4 rounded-xl">
-          <SideBarContent/>
+        <section className="sidebar w-1/4 flex-shrink-0 bg-primary-light dark:bg-primary m-2 p-4 rounded-xl">
+          <SideBarContent
+            keyword = {keyword} yearFrom = {yearFrom} yearTo={yearTo}
+            priceFrom = {priceFrom} priceTo={priceTo} color={color}
+            transmission={transmission} bodyType={bodyType} adType={adType} 
+          />
             
         </section>
-        <section className="content ">
+
+        <section className="content w-full">
         <p className='px-2'>Active Filters:</p>
           <div className="filters flex gap-2 p-2">
-            
-            {Object.keys(searchParams).map((key) => (
-              <div className="p-2 bg-primary gap-3 rounded-xl flex" key={key}>
-                  <p>{searchParams[key]}</p>
-                  <button className="px-2 bg-primary hover:bg-base-100  rounded-full">x</button>
+            <ActiveFilters/>
+            {/* {Object.keys(searchParams).map((key) => (
+              <div className="p-2 bg-primary-light dark:bg-primary gap-3 rounded-xl flex" key={key}>
+                  <p><span className='text-sm font-light'>{`${key}: `}</span>{searchParams[key]}</p>
+                  <button  onClick={() => removeParam(key)} className="px-2 bg-primary-light dark:bg-primary hover:bg-base-100  rounded-full">x</button>
               </div>
-            ))}
+            ))} */}
           </div>
-          <div className="overflow-hidden grid gap-4 grid-cols-1 flex-grow bg-primary m-2 py-4 px-4 rounded-xl">
-
-              <CarCard
+          <div className="overflow-hidden grid gap-4 grid-cols-1 flex-grow bg-primary-light dark:bg-primary m-2 py-4 px-4 rounded-xl">
+              <CarResult keyword = {keyword} yearFrom = {yearFrom} yearTo={yearTo}
+            priceFrom = {priceFrom} priceTo={priceTo} color={color}
+            transmission={transmission} bodyType={bodyType} adType={adType} page={page} props={searchParams}/>
+              
+              {/* <CarCard
+                img=""
+                title="Toyota Camry G Limited Edition 2016 jkhsd fj"
+                price={1}
+                year="2008"
+                registration="Lahore"
+                mileage="16,000"
+                engine="Petrol"
+                time="2 Days"
+              /> */}
+              {/* <CarCard
                 img=""
                 title="Toyota Camry G Limited Edition 2016 jkhsd fj"
                 price={1}
@@ -70,28 +108,14 @@ const SearchPage = ({ params, searchParams }) => {
                 mileage="16,000"
                 engine="Petrol"
                 time="2 Days"
-              />
-              <CarCard
-                img=""
-                title="Toyota Camry G Limited Edition 2016 jkhsd fj"
-                price={1}
-                year="2008"
-                registration="Lahore"
-                mileage="16,000"
-                engine="Petrol"
-                time="2 Days"
-              />
+              /> */}
           </div>
         </section>
       </div>
-
-      <div className="flex justify-end p-2">
-
-        <div className="join">
-          <button className="join-item btn bg-primary">«</button>
-          <button className="join-item btn bg-primary">Page 22</button>
-          <button className="join-item btn bg-primary">»</button>
-        </div>
+       
+        <div className="flex justify-end p-2 ">
+              <Pagination page={page}/>
+       
       </div>
     </main>
   );

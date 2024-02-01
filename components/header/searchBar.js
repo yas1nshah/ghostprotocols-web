@@ -22,11 +22,11 @@ const SearchBar = () => {
       <input
         type="text"
         placeholder="Search here"
-        className="input w-full bg-primary"
+        className="input w-full bg-primary-light dark:bg-primary"
         onChange={(e) => setKeyword(e.target.value)}
         value={keyword}
       />
-      <button className='btn bg-primary' type="submit">
+      <button className='btn bg-primary-light dark:bg-primary' type="submit">
         Go
       </button>
     </form>

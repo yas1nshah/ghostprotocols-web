@@ -47,6 +47,7 @@ export default function CarSlider(props) {
           {cars.map((car, index) => (
             <div key={index} className="w-1/4 flex-shrink-0 ">
               <CarCard
+                id = {car.stockid}
                 imgs={car.gallery[car.galleryIndex]}
                 title={car.title}
                 price={car.price}
@@ -61,10 +62,10 @@ export default function CarSlider(props) {
         </div>
         <div className="flex justify-end px-2">
 
-          <button onClick={handlePrev} className="btn m-1 bg-primary p-2 py-1 disabled:opacity-15" disabled={current === 0}>
+          <button onClick={handlePrev} className="btn m-1 bg-primary-light dark:bg-primary p-2 py-1 disabled:opacity-15" disabled={current === 0}>
             <i className="icon m-auto" style={{ backgroundPosition: '-60px -30px' }}></i>
           </button>
-          <button onClick={handleNext} className="btn m-1  bg-primary p-2 py-1 disabled:opacity-15" disabled={current === cars.length-4}>
+          <button onClick={handleNext} className="btn m-1  bg-primary-light dark:bg-primary p-2 py-1 disabled:opacity-15" disabled={current === cars.length-4}>
             <i className="icon m-auto" style={{ backgroundPosition: '-90px -30px' }}></i>
           </button>
         </div>

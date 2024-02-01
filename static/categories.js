@@ -1,6 +1,6 @@
 const categories = [
     {
-      name: "categories",
+      name: "Categories",
       subcategories: [
         {
           "name": "SUV",
@@ -15,7 +15,7 @@ const categories = [
       ]
     },
     {
-      name: "city",
+      name: "City",
       subcategories: [
         {
           "name": "Lahore",
@@ -30,7 +30,7 @@ const categories = [
       ]
     },
     {
-      name: "make",
+      name: "Make",
       subcategories: [
         {
           "name": "Toyota",
@@ -135,7 +135,7 @@ const categories = [
       ]
     },
     {
-      name: "model",
+      name: "Model",
       subcategories: [
         {
           "name": "Corolla",
@@ -275,7 +275,7 @@ const categories = [
       ]
     },
     {
-      name: "budget",
+      name: "Budget",
       subcategories: [
         {
           "name": "under 5 Lakh",
@@ -335,7 +335,7 @@ const categories = [
       ]
     },
     {
-      name: "body Type",
+      name: "Body Type",
       subcategories: [
         {
           "name": "Sedan",

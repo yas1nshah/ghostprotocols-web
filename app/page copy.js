@@ -20,8 +20,8 @@ export default async function Home() {
   const homeData = await getData();
   return (
     <main className="relative max-w-6xl mx-auto
-     before:fixed before:h-[300px] dark:before:opacity-15 before:opacity-55 before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-accent before:to-transparent before:blur-2xl before:content-[''] before:-z-10
-  after:fixed after:top-2/4 after:w-96 my-3 after:h-1/4  after:left-2/4 after:bg-gradient-conic after:from-secondary after:via-accent after:blur-2xl after:-z-10 after:opacity-55 dark:after:opacity-25
+     before:fixed before:h-[300px] before:opacity-15 before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-accent before:to-transparent before:blur-2xl before:content-[''] before:-z-10
+  after:fixed after:top-2/4 after:w-96 my-3 after:h-1/4  after:left-2/4 after:bg-gradient-conic after:from-secondary after:via-accent after:blur-2xl after:-z-10 after:opacity-25
     ">
       
       <Hero/>
@@ -29,7 +29,7 @@ export default async function Home() {
       
       <div className="services  m-2  overflow-hidden">
         <div className="flex my-4  gap-4 ">
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
+          <div className="bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
             <div className="text-wrap">
               <p className="text-secondary text-xs">ENCHANTING SALES SORCERY</p>
               <h4 className="font-medium text-lg">We Sell, You Win</h4>
@@ -38,7 +38,7 @@ export default async function Home() {
             <Image className="w-auto h-full" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
           </div>
 
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
+          <div className="bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
             <div className="text-wrap">
               <p className="text-secondary text-xs">ENCHANTING SALES SORCERY</p>
               <h4 className="font-medium text-lg">We Sell, You Win</h4>
@@ -49,7 +49,7 @@ export default async function Home() {
         
         </div>
         <div className="flex  my-4 gap-4 ">
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
+          <div className="bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
             <div className="text-wrap">
               <p className="text-secondary text-xs">ENCHANTING SALES SORCERY</p>
               <h4 className="font-medium text-lg">We Sell, You Win</h4>
@@ -58,7 +58,7 @@ export default async function Home() {
             <Image className="w-auto h-full" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
           </div>
 
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
+          <div className="bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
             <div className="text-wrap">
               <p className="text-secondary text-xs">ENCHANTING SALES SORCERY</p>
               <h4 className="font-medium text-lg">We Sell, You Win</h4>
@@ -69,7 +69,7 @@ export default async function Home() {
         
         </div>
         <div className="flex  my-4 gap-4 ">
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
+          <div className="bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
             <div className="text-wrap">
               <p className="text-secondary text-xs">ENCHANTING SALES SORCERY</p>
               <h4 className="font-medium text-lg">We Sell, You Win</h4>
@@ -78,7 +78,7 @@ export default async function Home() {
             <Image className="w-auto h-full" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
           </div>
 
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
+          <div className="bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer flex justify-between p-4  rounded-xl">
             <div className="text-wrap">
               <p className="text-secondary text-xs">ENCHANTING SALES SORCERY</p>
               <h4 className="font-medium text-lg">We Sell, You Win</h4>

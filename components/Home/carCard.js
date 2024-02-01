@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import formatAmount from '@/utils/foramt-price'
 import formatTimeDifference from '@/utils/format-date'
@@ -8,21 +9,25 @@ import formatTimeDifference from '@/utils/format-date'
 const CarCard = (params) => {
 
   const {
-  imgs,
-  title,
-  price,
-  year,
-  registraition,
-  mileage,
-  engine,
-  time} = params ;
+    id,
+    imgs,
+    title,
+    price,
+    year,
+    registraition,
+    mileage,
+    engine,
+    time
+        } = params ;
   
-  const newImg = imgs.replace("/media","")
+  const link = title.replace(/ /g, "-")
+  // const newImg = imgs.replace("/media","")
   
   return (
-    <div className="dark:bg-primary h-64 max-w-64 rounded-xl overflow-hidden dark:text-white text-nowrap hover:text-wrap">
+    <Link href={`/inventory/${link}/${id}`}>
+    <div  className="bg-primary-light dark:bg-primary cursor-pointer  h-64 max-w-64 rounded-xl overflow-hidden dark:text-white text-nowrap hover:text-wrap">
           <div className="w-full h-1/2  img bg-black">
-            <Image className="w-full h-full object-cover  rounded-t-xl" src={`https://images.tixy.pk${newImg}`} width={250} height={150}/>
+            <Image className="w-full h-full object-cover  rounded-t-xl" src={`https://images.tixy.pk/${imgs}`} width={250} height={150}/>
           </div>
           <div className="h-1/2 w-full px-2 py-2 flex flex-col justify-evenly">
               <h3 className="title text-sm ">
@@ -42,6 +47,7 @@ const CarCard = (params) => {
 
           
         </div>
+        </Link>
   )
 }
 

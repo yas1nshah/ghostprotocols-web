@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -20,6 +21,7 @@ module.exports = {
           "success": "#64cb00",                
           "warning": "#f59e0b",                
           "error": "#be123c",
+          "base-content": "#000000",
         },
       },
       {
@@ -34,6 +36,7 @@ module.exports = {
           "success": "#64cb00",                
           "warning": "#f59e0b",                
           "error": "#be123c",
+          "base-content": "#FFFFFF",
         },
       },
         "cupcake", "synthwave"],
@@ -47,6 +50,7 @@ module.exports = {
       },
       colors: {
         "primary": "rgba(123, 123, 123, 0.15)",
+        "primary-light": "rgba(140, 140, 140, 0.2)",
       }
     },
   },

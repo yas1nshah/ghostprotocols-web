@@ -37,7 +37,7 @@ const Gallery = (props) => {
   return (
     
       
-      <div className="w-full h-full gallery relative overflow-hidden aspect-video rounded-xl bg-primary">
+      <div className="w-full h-full gallery relative overflow-hidden aspect-video rounded-xl bg-primary-light dark:bg-primary">
         <div {...handlers} className="images flex w-full h-full overflow-hidden">
           {props.images.map((img, index) => (
             <Image
@@ -46,8 +46,8 @@ const Gallery = (props) => {
               className="w-full h-full object-cover flex-shrink-0 flex-grow-0 transition-all ease-out duration-500"
               style={{ transform: `translateX(${currentImgIndex * -100}%)` }}
               src={img}
-              width={500}
-              height={500}
+              width={800}
+              height={800}
               alt="Car Image"
             />
           ))}
