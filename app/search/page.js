@@ -24,7 +24,7 @@ import Pagination from '@/components/search/Pagination';
 // }
 
 const SearchPage = async ({ params, searchParams }) => {
-  const { keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page  } = searchParams;
+  const { keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page, make, model  } = searchParams;
   
 
   // const cars  = await getData(keyword)
@@ -67,7 +67,8 @@ const SearchPage = async ({ params, searchParams }) => {
           <div className="overflow-hidden grid gap-4 grid-cols-1 flex-grow bg-primary-light dark:bg-primary m-2 py-4 px-4 rounded-xl">
               <CarResult keyword = {keyword} yearFrom = {yearFrom} yearTo={yearTo}
             priceFrom = {priceFrom} priceTo={priceTo} color={color}
-            transmission={transmission} bodyType={bodyType} adType={adType} page={page} props={searchParams}/>
+            transmission={transmission} bodyType={bodyType} adType={adType} page={page} 
+            make={make} model={model} props={searchParams}/>
               
               {/* <CarCard
                 img=""

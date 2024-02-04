@@ -5,7 +5,7 @@ import formatAmount from '@/utils/foramt-price'
 import formatTimeDifference from '@/utils/format-date'
 
 async function getData(props) {
-    const { keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType,page  } = props;
+    const { keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType,page ,make, model } = props;
 
     const searchParams = new URLSearchParams();
   
@@ -19,6 +19,8 @@ async function getData(props) {
     if (bodyType) searchParams.append('bodyType', bodyType);
     if (adType) searchParams.append('adType', adType);
     if (page) searchParams.append('page', page);
+    if (make) searchParams.append('make', make);
+    if (model) searchParams.append('make', model);
   
     const dynamicSearchURL = `/inventory?${searchParams.toString()}`;
   

@@ -38,7 +38,9 @@ const CarGallery = (props) => {
   return (
     
       
-      <div className="gallery relative overflow-hidden aspect-video w-full rounded-xl bg-primary-light dark:bg-primary">
+      <div className="gallery relative overflow-hidden aspect-video
+                       w-full rounded-xl bg-primary-light dark:bg-primary
+                       order-1 md:order-2">
         <div {...handlers} className="images flex w-full h-full overflow-hidden">
           {props.images.map((img, index) => {
             const newLink = img.replace("/media", "")
