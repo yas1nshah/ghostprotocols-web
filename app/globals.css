@@ -28,7 +28,9 @@
 body::-webkit-scrollbar {
   display: none;
 }
-#hero-gallery::-webkit-scrollbar,#slider::-webkit-scrollbar {
+#hero-gallery::-webkit-scrollbar,
+#slider::-webkit-scrollbar,
+#active-filters::-webkit-scrollbar {
   display: none;
 }
 /* :root {

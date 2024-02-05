@@ -18,7 +18,7 @@ const AppCTA = () => {
         <Image className="w-full h-auto bottom-0" width={400} height={500} src={"/app-prev.webp"}/>
       </div>
     </div>
-    <div className="flex justify-start gap-3 my-5">
+    <div className="flex justify-start gap-3 -mt-2 md:mt-5">
           <a href="" className="bg-primary p-2 rounded-xl flex gap-4 t">
             <i className="icon invert dark:invert-0" style={{backgroundPosition: '-30px -30px'}}></i>
             <div>

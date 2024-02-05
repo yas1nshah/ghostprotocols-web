@@ -2,11 +2,26 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-
+import { useState } from 'react'
+import { search } from '@/app/liveSearch/actions'
 import menu from '@/static/menu'
 import SearchBar from './searchBar'
 
 const Navbar = () => {
+    const [keyword, setKeyword] = useState('');
+    const [result, setResult] = useState([]);
+    const [searchBar, setSearchBar] = useState();
+  
+    const getResult = async (value) => {
+      setKeyword(value);
+      const searchResult = await search(value);
+      setResult(searchResult);
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // You can perform additional actions on form submission if needed
+    };
   return (
     <div className="header">
     <div className="head h-16 max-w-6xl py-2 px-2 mx-auto flex justify-between items-center">
@@ -14,9 +29,11 @@ const Navbar = () => {
             <Image className='h-full w-auto invert dark:invert-0'  height={100} width={120} src={"/ghost.png"}/>
         </Link>
       
-           <SearchBar/>
+           
       
         <div className='flex gap-5'>
+            <button onClick={()=> setSearchBar(true)} className="icon hover:scale-110"></button>
+            
             <label className="swap swap-rotate">
   
                 {/* this hidden checkbox controls the state */}
@@ -39,8 +56,51 @@ const Navbar = () => {
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
+    {
+          searchBar &&
+          <div className="absolute w-full h-full bg-base-100 top-0 z-10">
+          {/* bacldrop */}
+          <div className="fixed bg-base-100 h-full w-full z-0 top-0 left-0 opacity-85"></div>
+          <form
+              className='flex gap-2 flex-grow max-w-6xl mx-auto'
+              onSubmit={handleSubmit}
+            >
+            <div className="w-full relative">
+              <div className="flex">
+                <div onClick={()=> setSearchBar(false)} className="p-2 mr-3 hover:scale-110 cursor-pointer">
+                  <i className="icon invert dark:invert-0" style={{ backgroundPosition: '-60px -30px' }}></i>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search here"
+                  className="input w-full bg-primary-light dark:bg-primary"
+                  onChange={(e) => getResult(e.target.value)}
+                  value={keyword}
+                />
+              </div>
+              
+            </div>
+              <button className='z-10 btn bg-primary-light dark:bg-primary mr-2' type="submit">
+                Go
+              </button>
+              <div id='search-result' className="absolute w-full max-w-6xl mx-auto top-14 bg-base-100 rounded-xl my-3 overflow-clip md:max-h-64 overflow-y-scroll">
+
+                {result.length > 0 ? result.map((car) => (
+                  <div className='bg-primary p-2 px-4 cursor-pointer ' key={car.id}>
+                    <h4 className='text-sm opacity-60'>{car.make}</h4>
+                    <h3 >{car.model}</h3>
+                    {/* Add more details if needed */}
+                  </div>
+                )) : <h2 className='text-center p-4'>No Cars Found</h2> }
+              </div>
+              {/* <span className="loading loading-spinner loading-lg"></span> */}
+            </form>
+          </div>
+        }
+    
+    {/* Botttom Nav */}
     <nav className='py-1 px-2 bg-secondary '>
         <ul className='flex justify-center gap-5 max-w-6xl mx-auto'>
             {menu.map((item, index) => (

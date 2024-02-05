@@ -25,12 +25,12 @@ const removeParam = (paramToRemove) => {
     <>
     {
         queries.map((filter, index)=>(
-            <div className="p-2 bg-primary-light dark:bg-primary gap-3 rounded-xl flex" key={index}>
-                <p>
-                    <span className='text-sm font-light'>{`${filter.key}: `}</span>
+            <div className="px-2 py-1 bg-primary-light dark:bg-primary gap-3 rounded-xl flex" key={index}>
+                <p className='text-sm md:text-base'>
+                    <span className='text-xs font-light'>{`${filter.key}: `}</span>
                     {filter.value}
                 </p>
-                <button onClick={() => removeParam(filter.key)} className="px-2 bg-primary-light dark:bg-primary hover:bg-base-100 rounded-full">x</button>
+                <button onClick={() => removeParam(filter.key)} className="px-2 max-h-6 bg-primary-light dark:bg-primary hover:bg-base-100 rounded-full">x</button>
             </div>
         ))
     }
