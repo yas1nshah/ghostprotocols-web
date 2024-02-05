@@ -59,45 +59,7 @@ const Navbar = () => {
 
     </div>
     {
-          searchBar &&
-          <div className="absolute w-full h-full bg-base-100 top-0 z-10">
-          {/* bacldrop */}
-          <div className="fixed bg-base-100 h-full w-full z-0 top-0 left-0 opacity-85"></div>
-          <form
-              className='flex gap-2 flex-grow max-w-6xl mx-auto'
-              onSubmit={handleSubmit}
-            >
-            <div className="w-full relative">
-              <div className="flex">
-                <div onClick={()=> setSearchBar(false)} className="p-2 mr-3 hover:scale-110 cursor-pointer">
-                  <i className="icon invert dark:invert-0" style={{ backgroundPosition: '-60px -30px' }}></i>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search here"
-                  className="input w-full bg-primary-light dark:bg-primary"
-                  onChange={(e) => getResult(e.target.value)}
-                  value={keyword}
-                />
-              </div>
-              
-            </div>
-              <button className='z-10 btn bg-primary-light dark:bg-primary mr-2' type="submit">
-                Go
-              </button>
-              <div id='search-result' className="absolute w-full max-w-6xl mx-auto top-14 bg-base-100 rounded-xl my-3 overflow-clip md:max-h-64 overflow-y-scroll">
-
-                {result.length > 0 ? result.map((car) => (
-                  <div className='bg-primary p-2 px-4 cursor-pointer ' key={car.id}>
-                    <h4 className='text-sm opacity-60'>{car.make}</h4>
-                    <h3 >{car.model}</h3>
-                    {/* Add more details if needed */}
-                  </div>
-                )) : <h2 className='text-center p-4'>No Cars Found</h2> }
-              </div>
-              {/* <span className="loading loading-spinner loading-lg"></span> */}
-            </form>
-          </div>
+          
         }
     
     {/* Botttom Nav */}
@@ -117,3 +79,42 @@ const Navbar = () => {
 export default Navbar
 
 
+// searchBar &&
+//           <div className="absolute w-full h-full bg-base-100 top-0 z-10">
+//           {/* bacldrop */}
+//           <div className="fixed bg-base-100 h-full w-full z-0 top-0 left-0 opacity-85"></div>
+//           <form
+//               className='flex gap-2 flex-grow max-w-6xl mx-auto'
+//               onSubmit={handleSubmit}
+//             >
+//             <div className="w-full relative">
+//               <div className="flex">
+//                 <div onClick={()=> setSearchBar(false)} className="p-2 mr-3 hover:scale-110 cursor-pointer">
+//                   <i className="icon invert dark:invert-0" style={{ backgroundPosition: '-60px -30px' }}></i>
+//                 </div>
+//                 <input
+//                   type="text"
+//                   placeholder="Search here"
+//                   className="input w-full bg-primary-light dark:bg-primary"
+//                   onChange={(e) => getResult(e.target.value)}
+//                   value={keyword}
+//                 />
+//               </div>
+              
+//             </div>
+//               <button className='z-10 btn bg-primary-light dark:bg-primary mr-2' type="submit">
+//                 Go
+//               </button>
+//               <div id='search-result' className="absolute w-full max-w-6xl mx-auto top-14 bg-base-100 rounded-xl my-3 overflow-clip md:max-h-64 overflow-y-scroll">
+
+//                 {result.length > 0 ? result.map((car) => (
+//                   <div className='bg-primary p-2 px-4 cursor-pointer ' key={car.id}>
+//                     <h4 className='text-sm opacity-60'>{car.make}</h4>
+//                     <h3 >{car.model}</h3>
+//                     {/* Add more details if needed */}
+//                   </div>
+//                 )) : <h2 className='text-center p-4'>No Cars Found</h2> }
+//               </div>
+//               {/* <span className="loading loading-spinner loading-lg"></span> */}
+//             </form>
+//           </div>

@@ -80,7 +80,7 @@ export default async function Home({params}) {
     <div className="content w-full md:w-2/3 flex-grow flex flex-col">
       
       <h1 className="text-xl md:text-2xl font-semibold order-2 pt-2 md:order-1 md:pb-4">{title}</h1>
-      <div className="order-2 md:order-1 stat-value text-secondary"><span className="font-normal">Rs</span> {formatAmount(price)}</div>
+      <div className="order-2 md:order-1 stat-value text-secondary md:hidden"><span className="font-normal">Rs</span> {formatAmount(price)}</div>
       <CarGallery images={gallery}/>
 
       {/* Quick Overview */}

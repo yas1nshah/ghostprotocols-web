@@ -19,10 +19,7 @@ async function getData() {
 export default async function Home() {
   const homeData = await getData();
   return (
-    <main className="relative max-w-6xl mx-auto overflow-x-hidden
-     before:fixed before:h-[300px] dark:before:opacity-15 before:opacity-55 before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-accent before:to-transparent before:blur-2xl before:content-[''] before:-z-10
-  after:fixed after:top-2/4 after:w-96 my-3 after:h-1/4  after:left-2/4 after:bg-gradient-conic after:from-secondary after:via-accent after:blur-2xl after:-z-10 after:opacity-55 dark:after:opacity-25
-    ">
+    <main className="main">
       
       <Hero/>
       <CarSlider title="Ghost Yard's" cars={homeData.gpcars}/>

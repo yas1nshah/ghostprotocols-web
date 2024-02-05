@@ -9,7 +9,7 @@ async function getData(props) {
 
     const searchParams = new URLSearchParams();
   
-    if (keyword) searchParams.append('keyword', encodeURIComponent(keyword));
+    if (keyword) searchParams.append('keyword', decodeURIComponent(keyword));
     if (yearFrom) searchParams.append('yearFrom', yearFrom);
     if (yearTo) searchParams.append('yearTo', yearTo);
     if (priceFrom) searchParams.append('priceFrom', priceFrom);
