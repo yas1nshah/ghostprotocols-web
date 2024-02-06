@@ -1,7 +1,7 @@
 const menu = [
     {
         "name": "Inventory",
-        "link" : "/inventory"
+        "link" : "/search"
     },
     {
         "name": "GP Cars",
@@ -13,15 +13,15 @@ const menu = [
     },
     {
         "name": "Services",
-        "link" : "/inventory"
+        "link" : "/services"
     },
     {
         "name": "Demand List",
-        "link" : "/inventory"
+        "link" : "/demand-list"
     },
     {
         "name": "About Us",
-        "link" : "/inventory"
+        "link" : "/about-us"
     },
 ]
 

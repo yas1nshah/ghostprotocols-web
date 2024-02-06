@@ -15,7 +15,7 @@ const AppCTA = () => {
         {/* Stores */}
       </div>
     <div className="flex-shrink flex items-end w-1/2 md:absolute right-0">
-        <Image className="w-full h-auto bottom-0" width={400} height={500} src={"/app-prev.webp"}/>
+        <Image draggable="false" className="w-full h-auto bottom-0" width={400} height={500} src={"/app-prev.webp"}/>
       </div>
     </div>
     <div className="flex justify-start gap-3 -mt-2 md:mt-5">
