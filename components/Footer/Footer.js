@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import menu from '@/static/menu'
 import Link from 'next/link'
+import Script from 'next/script'
 
 const Footer = () => {
   return (
@@ -127,6 +128,8 @@ const Footer = () => {
         <div className="bg-secondary  text-center">
             <p className='font-semibold text-black'>&copy; {new Date().getFullYear()} Ghost Protocols</p>
         </div>
+
+        
     </footer>
 
 

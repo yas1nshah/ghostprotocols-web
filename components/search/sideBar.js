@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 const SideBarContent = (params) => {
 
 const router = useRouter()
-const {keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page  } = params;
+const {keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page, makeP, modelP  } = params;
 const [keywordS, setKeywordS] = useState(keyword)
 const [yearFromS, setYearFromS] = useState(yearFrom)
 const [yearToS, setYearToS] = useState(yearTo)
@@ -17,12 +17,18 @@ const [colorS, setColorS] = useState(color)
 const [transmissionS, setTransmissionS] = useState(transmission)
 const [bodyTypeS, setBodyTypeS] = useState(bodyType)
 const [adTypeS, setAdTypeS] = useState(adType)
+const [makeS, setMakeS] = useState(makeP)
+const [modelS, setModelS] = useState(modelP)
+
 
 
 const colors = ["Red", "Blue", "White", "Black"]
 const transmissions = ["Automatic", "Manual"]
 const bodyTypes = ["SUV", "Sedan", "Hatchback"]
-const adTypes = ["Ghost Yard's", "Free Listing", "Featured"]
+const adTypes = [{"name":"Ghost Yard's", "value":"ghost-yard"},
+                {"name":"Free Listing", "value":"free-listing"},
+                {"name":"Featured", "value":"featured"},
+                ]
 
 const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,6 +45,8 @@ const handleSubmit = (e) => {
     if (transmissionS) searchParams.append('transmission', transmissionS);
     if (bodyTypeS) searchParams.append('bodyType', bodyTypeS);
     if (adTypeS) searchParams.append('adType', adTypeS);
+    if (makeS) searchParams.append('make', encodeURIComponent(makeS));
+    if (modelS) searchParams.append('model', encodeURIComponent(modelS));
     if (page) searchParams.append('page', page);
   
     const dynamicSearchURL = `/search?${searchParams.toString()}`;
@@ -55,6 +63,7 @@ const handleSubmit = (e) => {
             <input type="checkbox" /> 
             <h2 className="collapse-title font-semibold">
                 Filters
+                {makeS}
             </h2>
             <div className="collapse-content"> 
               
@@ -230,8 +239,8 @@ const handleSubmit = (e) => {
                             adTypes.map((adType, index) =>(
                                 <div key={index}>
                                     <label className="label cursor-pointer">
-                                        <span className="label-text">{adType} </span> 
-                                        <input type="radio" name="adType" value={adType} onChange={(e)=>setAdTypeS(e.target.value)}  checked={adTypeS?.toLocaleLowerCase()===adType.toLocaleLowerCase()}  className="radio checked:bg-secondary"  />
+                                        <span className="label-text">{adType.name} </span> 
+                                        <input type="radio" name="adType" value={adType.value} onChange={(e)=>setAdTypeS(e.target.value)}  checked={adTypeS?.toLocaleLowerCase()===adType.value.toLocaleLowerCase()}  className="radio checked:bg-secondary"  />
                                     </label>
                                 </div>
                             ))

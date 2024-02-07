@@ -7,7 +7,7 @@ import ActiveFilters from '@/components/search/ActiveFilters';
 import Pagination from '@/components/search/Pagination';
 
 const SearchPage = async ({ params, searchParams }) => {
-  const { keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page, make, model  } = searchParams;
+  const {make, model , keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page  } = searchParams;
 
   return (
     <main className="relative max-w-6xl mx-auto 
@@ -19,6 +19,7 @@ const SearchPage = async ({ params, searchParams }) => {
           <li><Link href={"/"}>Home</Link></li> 
           <li><Link href={"/inventory"}>Inventory</Link></li> 
           <li>Search</li>
+          <li>{make}</li>
         </ul>
       </div>
 
@@ -28,7 +29,8 @@ const SearchPage = async ({ params, searchParams }) => {
           <SideBarContent
             keyword = {keyword} yearFrom = {yearFrom} yearTo={yearTo}
             priceFrom = {priceFrom} priceTo={priceTo} color={color}
-            transmission={transmission} bodyType={bodyType} adType={adType} 
+            transmission={transmission} bodyType={bodyType} adType={adType}
+            makeP={make} modelP={model} 
           />
             
         </section>

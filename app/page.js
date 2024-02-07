@@ -3,6 +3,8 @@ import Image from "next/image";
 import CarSlider from "@/components/Home/carSlider";
 import Hero from "@/components/Home/hero";
 import urls from "@/static/urls";
+import services from "@/static/services";
+import Link from "next/link";
 
 async function getData() {
   const res = await fetch(`${urls.APIURL}/home`,{ next: { revalidate: 7200 } })
@@ -24,85 +26,29 @@ export default async function Home() {
       <Hero/>
       <CarSlider title="Ghost Yard's" cars={homeData.gpcars}/>
       
-      <div className="services  m-2  overflow-hidden">
-        <div className="flex my-4 mx-2 md:mx-0  gap-4 ">
-         
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer 
-                          flex justify-between p-4  rounded-xl
-                          flex-col items-end
-                          md:flex-row">
-            <div className="text-wrap order-2  w-full md:order-1">
-              <p className="text-secondary text-xs hidden md:inline">ENCHANTING SALES SORCERY</p>
-              <h4 className="font-medium text-base md:text-lg self-start">We Sell, You Win</h4>
-              <hp className=" text-sm hidden md:inline">Experience the magic of hassle-free car sales.</hp>
-            </div>
-            <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
-          </div>
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer 
-                          flex justify-between p-4  rounded-xl
-                          flex-col items-end
-                          md:flex-row">
-            <div className="text-wrap order-2  w-full md:order-1">
-              <p className="text-secondary text-xs hidden md:inline">ENCHANTING SALES SORCERY</p>
-              <h4 className="font-medium text-base md:text-lg self-start">We Sell, You Win</h4>
-              <hp className=" text-sm hidden md:inline">Experience the magic of hassle-free car sales.</hp>
-            </div>
-            <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
-          </div>
-        </div>
+      
 
-        <div className="flex my-4 mx-2 md:mx-0  gap-4 ">
-         
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer 
-                          flex justify-between p-4  rounded-xl
-                          flex-col items-end
-                          md:flex-row">
-            <div className="text-wrap order-2  w-full md:order-1">
-              <p className="text-secondary text-xs hidden md:inline">ENCHANTING SALES SORCERY</p>
-              <h4 className="font-medium text-base md:text-lg self-start">We Sell, You Win</h4>
-              <hp className=" text-sm hidden md:inline">Experience the magic of hassle-free car sales.</hp>
-            </div>
-            <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
-          </div>
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer 
-                          flex justify-between p-4  rounded-xl
-                          flex-col items-end
-                          md:flex-row">
-            <div className="text-wrap order-2  w-full md:order-1">
-              <p className="text-secondary text-xs hidden md:inline">ENCHANTING SALES SORCERY</p>
-              <h4 className="font-medium text-base md:text-lg self-start">We Sell, You Win</h4>
-              <hp className=" text-sm hidden md:inline">Experience the magic of hassle-free car sales.</hp>
-            </div>
-            <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
-          </div>
-        </div>
+      {/* Services */}
+      <div className="m-2">
 
-        <div className="flex my-4 mx-2 md:mx-0  gap-4 ">
-         
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer 
-                          flex justify-between p-4  rounded-xl
-                          flex-col items-end
-                          md:flex-row">
-            <div className="text-wrap order-2  w-full md:order-1">
-              <p className="text-secondary text-xs hidden md:inline">ENCHANTING SALES SORCERY</p>
-              <h4 className="font-medium text-base md:text-lg self-start">We Sell, You Win</h4>
-              <hp className=" text-sm hidden md:inline">Experience the magic of hassle-free car sales.</hp>
-            </div>
-            <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
-          </div>
-          <div className="bg-primary-light dark:bg-primary flex-grow hover:bg-base-100 transition-all cursor-pointer 
-                          flex justify-between p-4  rounded-xl
-                          flex-col items-end
-                          md:flex-row">
-            <div className="text-wrap order-2  w-full md:order-1">
-              <p className="text-secondary text-xs hidden md:inline">ENCHANTING SALES SORCERY</p>
-              <h4 className="font-medium text-base md:text-lg self-start">We Sell, You Win</h4>
-              <hp className=" text-sm hidden md:inline">Experience the magic of hassle-free car sales.</hp>
-            </div>
-            <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={"https://v2.ghostprotocols.pk/static/sell-now.webp"} />
-          </div>
+      <h1 className="text-xl md:text-2xl font-semibold">Services</h1>
+        <div className="m-2 grid grid-cols-2 gap-4">
+          {
+            services.map((item,index)=>(
+              <Link href={item.link} key={index} className="bg-primary-light dark:bg-primary hover:bg-secondary hover:bg-opacity-25 dark:hover:bg-secondary dark:hover:bg-opacity-10 transition-all cursor-pointer 
+                            flex justify-between p-4 rounded-xl
+                            flex-col items-end
+                            md:flex-row">
+                <div className="text-wrap order-2  w-full md:order-1">
+                  <h3 className="text-secondary text-xs hidden md:inline">{item.subTitle}</h3>
+                  <h2 className="font-medium text-base md:text-lg self-start">{item.title}</h2>
+                  <p className=" text-sm hidden md:inline">{item.details}</p>
+                </div>
+                <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={`/media/services${item.image}`} />
+              </Link>
+            ))
+          }
         </div>
-        
       </div>
 
       <CarSlider title="Featured Cars" cars={homeData.featuredCars}/>

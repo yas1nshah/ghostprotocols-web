@@ -59,39 +59,85 @@ const page = () => {
 
     // ? Gallery
     const handleFileChange = async (e) => {
-        const files = e.target.files;
-    
-        // Restrict file types to images (you can customize this further)
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        const selectedFiles = Array.from(files).filter(file =>
+      const files = e.target.files;
+  
+      // Restrict file types to images (you can customize this further)
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/heif', 'image/heic', 'image/bmp', 'image/webp'];
+      const selectedFiles = Array.from(files).filter(file =>
           allowedTypes.includes(file.type)
-        );
-    
-        // Ensure that the total number of selected files is not more than 5
-        if (selectedFiles.length + gallery.length > 5) {
+      );
+  
+      // Ensure that the total number of selected files is not more than 5
+      if (selectedFiles.length + gallery.length > 5) {
           alert('You can only select up to 5 images.');
           return;
-        }
-    
-        // Convert FileList to Array and update the gallery state
-        setGallery((prevGallery) => [...prevGallery, ...selectedFiles]);
+      }
+  
+      // Define a function to compress and convert an image to WebP format
+      const compressAndConvertToWebP = (imageFile) => {
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = function (event) {
+                  const img = new Image();
+                  img.src = event.target.result;
+                  img.onload = function () {
+                      const canvas = document.createElement('canvas');
+                      const ctx = canvas.getContext('2d');
+                      canvas.width = img.width;
+                      canvas.height = img.height;
+                      ctx.drawImage(img, 0, 0);
+                      canvas.toBlob(blob => {
+                          // Returning the blob directly
+                          resolve(blob);
+                      }, 'image/webp', 0.7); // Convert to WebP format with quality 0.7 (adjust as needed)
+                  };
+              };
+              reader.readAsDataURL(imageFile);
+          });
       };
-    
+  
+      // Compress and convert each selected image to WebP format
+      const compressedImages = await Promise.all(selectedFiles.map(async (file) => {
+          return await compressAndConvertToWebP(file);
+      }));
+  
+      // Update the gallery state with the compressed images
+      setGallery(prevGallery => [...prevGallery, ...compressedImages]);
+  };
+  
+  
+  
+  
+  
       const removeImage = (index) => {
+        
         setGallery((prevGallery) => {
           const newGallery = [...prevGallery];
           newGallery.splice(index, 1);
           return newGallery;
         });
-      };
+        if (gallery.length === 0)
+        {
+          setGalleryIndex(0)
+        }
+        else if(gallery.length > 1)
+        {
 
-      const uploadImages = async (stockId, apiKey) => {
+          setGalleryIndex(index-1)
+        }
+        else{
+          setGalleryIndex(0)
+        }
+      }
+
+      const uploadImages = async ( stockId, apiKey = localStorage.getItem('jwtAccessToken')) => {
+      
         const url = `${urls.APIURL}/add-car/gallery`; // Replace with your actual API endpoint
       
         for (let index = 0; index < gallery.length; index++) {
           const image = gallery[index];
           const makeModel = `${make}-${model}`; // Assuming make and model are available
-          const imageName = `${makeModel}-${index + 1}.jpg`;
+          const imageName = `${makeModel}-${stockId}-${index + 1}.webp`;
       
           const formData = new FormData();
           formData.append('car', String(stockId)); // Replace with your actual car ID
@@ -126,7 +172,7 @@ const page = () => {
         e.preventDefault();
     
         // Assuming you have an endpoint to send the data to
-        const apiUrl = `${urls.APIURL}/add-car/gallery`; // Replace with your actual API endpoint
+        const apiUrl = `${urls.APIURL}/add-car`; // Replace with your actual API endpoint
     
         // Retrieve access token from localStorage
         const accessToken = localStorage.getItem('jwtAccessToken');
@@ -141,34 +187,36 @@ const page = () => {
           Authorization: `Bearer ${accessToken}`,
         };
     
-        const carData = {
-            "galleryIndex": String(galleryIndex),
-            "make": String(make),
-            "model": String(model),
-            "year": String(year),
-            "price": String(price),
-            "location": String(location),
-            "mileage": String(mileage),
-            "engine": String(engine),
-            "registration": String(registration),
-            "body": String(body),
-            "color": String(color),
-            "sellerComments": String(sellerComments)
-          };
         // const carData = {
-        //     "galleryIndex": "1",
-        //     "make": "Toyota",
-        //     "model": "Corolla",
-        //     "year": "2016",
-        //     "price": "15600000",
-        //     "location": "Multan",
-        //     "mileage": "156253",
-        //     "engine": "Pertrol",
-        //     "registration": "Lahore",
-        //     "body": "SUV",
-        //     "color": "Red",
-        //     "sellerComments": "This is a nice car"
-        // }
+        //     "galleryIndex": String(galleryIndex),
+        //     "make": String(make),
+        //     "model": String(model),
+        //     "year": String(year),
+        //     "price": String(price),
+        //     "location": String(location),
+        //     "mileage": String(mileage),
+        //     "engine": String(engine),
+        //     "engineCapacity": String(engineCapacity), // This
+        //     "transmission": String(transmission), // this
+        //     "registration": String(registration),
+        //     "body": String(body),
+        //     "color": String(color),
+        //     "sellerComments": String(sellerComments)
+        //   };
+        const carData = {
+            "galleryIndex": "1",
+            "make": "Toyota",
+            "model": "Corolla",
+            "year": "2016",
+            "price": "15600000",
+            "location": "Multan",
+            "mileage": "156253",
+            "engine": "Pertrol",
+            "registration": "Lahore",
+            "body": "SUV",
+            "color": "Red",
+            "sellerComments": "This is a nice car"
+        }
           
         
     
@@ -180,9 +228,9 @@ const page = () => {
           });
     
           if (response.ok) {
-            const car =  response.json
-            console.log(response.body.data)
-            uploadImages(car.stockId, accessToken)
+            const {data} =  await response.json()
+            console.log(data)
+            await uploadImages(data.stockid, accessToken)
             console.log('Car posted successfully!');
             // You can handle success here
           } else {
@@ -216,9 +264,21 @@ const page = () => {
       };
 
   return (
-    <main className='max-w-6xl mx-auto p-4'>
-    <h1 className="text-lg md:text-2xl font-semibold">Add Car</h1>
+    <main className='main'>
+      <div className="m-2">
+          <h1 className='text-2xl md:text-4xl font-semibold'>Add Car</h1>
+          <div className="text-xs md:text-sm breadcrumbs ">
+                <ul>
+                  <li><Link href={"/"}>Home</Link></li> 
+                  <li><Link href={`/inventory`}>Inventory</Link></li> 
+                  <li>Add Car</li>
+                </ul>
+          </div>
+          <hr className='opacity-30 border-base-content'/>
+      </div>
+
         <div className="py-4">
+          <h2 className="text-base p-2">Live Preview:</h2>
             <CarCard
                 img=""
                 title={title}
@@ -230,14 +290,19 @@ const page = () => {
                 time={"0 seconds "}
             />
         </div>
-      <form onSubmit={uploadImages}>
+
+
+      <form onSubmit={postCar}>
+
         {/* Select Gallery */}
         <div className='relative flex flex-col mb-4'>
           <span className='label-text-alt'>Gallery</span>
           <div>
           {
             gallery.length > 0 && (
+            
             <div className='flex gap-2'>
+
                 {gallery.map((file, index) => (
                     <div key={index} className={`relative m-4 rounded-xl ${index === galleryIndex && "border-2"} border-secondary`}
                     onClick={()=>setGalleryIndex(index)}>
@@ -256,6 +321,7 @@ const page = () => {
           </div>
           <input type="file"  onChange={handleFileChange}
             multiple className="file-input file-input-bordered w-full max-w-xs" />
+            <p className='label-text-alt'>{"Select Upto 5 Images"}</p>
         </div>
 
         {/* Select Location */}
@@ -323,9 +389,9 @@ const page = () => {
                       onClick={() => {
                         setMake(model.make);
                         setModel(model.model);
-                        setEngine(model.engine);
+                        setEngine(model.engineType);
                         setEngineCapacity(model.engineCapacity);
-                        setBody(model.body);
+                        setBody(model.bodyType);
                         setTitle(model.title); // Update title here
                         setShowModels(false);
                       }}
@@ -380,10 +446,11 @@ const page = () => {
 
             </div>
         </div>
-        {/* Color and Mileage */}
-        <div className="flex justify-between gap-4 "> 
+
+        {/* Color Transmission Mileage */}
+        <div className="flex justify-between items-start flex-wrap md:flex-nowrap gap-4 "> 
             {/* Select Mileage */}
-            <div className='relative w-1/2'>
+            <div className='relative w-full md:w-1/3'>
             <span className='label-text-alt'>Mileage</span>
             <input
                 type='number'
@@ -398,17 +465,30 @@ const page = () => {
 
             </div>
 
+            {/* Select Transmission */}
+            <div className='relative w-full md:w-1/3'>
+            <span className='label-text-alt'>Transmission</span>
+            <select className="select select-bordered w-full bg-primary"
+                value={transmission}
+                onChange={(e)=>setTransmission(e.target.value)}>
+                    <option className='text-base-content bg-black' disabled>Select Transmission</option>
+                    <option className='text-base-content bg-black' value={0}>Manual</option>
+                    <option className='text-base-content bg-black' value={1}>Automatic</option>
+                    
+            </select>
+            </div>
+
             {/* Select Color */}
-            <div className='relative mb-4 w-1/2'>
+            <div className='relative mb-4 w-full md:w-1/3'>
             <p className='label-text-alt'>Color</p>
             <select className="select select-bordered w-full bg-primary"
                 value={color}
                 onChange={(e)=>setColor(e.target.value)}>
-                    <option disabled>Select Color</option>
-                    <option>Red</option>
-                    <option>Black</option>
-                    <option>White</option>
-                </select>
+                    <option className='text-base-content bg-black' disabled>Select Color</option>
+                    <option className='text-base-content bg-black'>Red</option>
+                    <option className='text-base-content bg-black'>Black</option>
+                    <option className='text-base-content bg-black'>White</option>
+            </select>
 
             </div>
         </div>

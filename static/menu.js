@@ -9,7 +9,7 @@ const menu = [
     },
     {
         "name": "Add Car",
-        "link" : "/inventory"
+        "link" : "/inventory/add-car"
     },
     {
         "name": "Services",

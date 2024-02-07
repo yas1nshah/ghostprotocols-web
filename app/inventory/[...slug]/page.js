@@ -247,11 +247,18 @@ export default async function Home({params}) {
         <div className="stat">
           <div className="stat-title">Demand</div>
           <div className="stat-value text-secondary"><span className="font-normal">Rs</span> {formatAmount(price)}</div>
-          {featured &&
-            <div className="stat-desc p-1 bg-secondary my-1 rounded-full text-center text-white">Featured By GP</div>
+          
+          {
+            featured &&
+            <div className="text-xs px-1 md:py-0.5 bg-secondary my-1 rounded-full text-center ">GP Featured</div>
           }
-          {gpcar &&
-            <div className="stat-desc p-1 bg-secondary my-1 rounded-full text-center text-white">Ghost Yard's</div>
+          {
+            gpcar &&
+            <div className="text-xs px-1 md:py-0.5 bg-secondary my-1 rounded-full text-center ">GP Personal</div>
+          }
+          {
+            !gpcar && !featured &&
+            <div className="text-xs px-1 md:py-0.5 bg-primary my-1 rounded-full text-center ">Free Listing</div>
           }
         </div>
         

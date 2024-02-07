@@ -1,9 +1,11 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const CarCard = (params) => {
+  const link = params.title.replace(/ /g, "-")
   return (
-    <div className="dark:bg-primary-light bg-primary h-32 md:h-40 md:px-2  flex rounded-xl dark:text-white text-nowrap hover:text-wrap">
+    <Link  href={`/inventory/${link}/${params.id}`} className={`dark:bg-primary ${params.featured && "border-2 border-secondary"} bg-primary h-32 md:h-40 md:px-2  flex rounded-xl dark:text-white text-nowrap hover:text-wrap`}>
           
       <div className='w-1/4 md:px-2 md:py-3 h-full flex-shrink-0 flex-grow-0'>
         <Image draggable="false" className="w-full h-full object-cover  rounded-xl" src={"https://images.tixy.pk/images/Toyota_Camry_G_LIMITED_EDITION_2016-16-1.jpg"} width={250} height={150}/>
@@ -32,7 +34,18 @@ const CarCard = (params) => {
                     <span className="pre font-normal ">PKR </span>
                     {params.price} 
                 </h2>
-                <div className="text-xs px-1 md:py-0.5 bg-secondary my-1 rounded-full text-center ">Managed By GP</div>
+                {
+                  params.featured &&
+                  <div className="text-xs px-1 md:py-0.5 bg-secondary my-1 rounded-full text-center ">GP Featured</div>
+                }
+                {
+                  params.gpcar &&
+                  <div className="text-xs px-1 md:py-0.5 bg-secondary my-1 rounded-full text-center ">GP Personal</div>
+                }
+                {
+                  !params.gpcar && !params.featured &&
+                  <div className="text-xs px-1 md:py-0.5 bg-primary my-1 rounded-full text-center ">Free Listing</div>
+                }
             </div>
             <div className=""></div>
             <button className="btn block  w-full my-1 bg-primary-light dark:bg-primary text-xs md:text-base p-0">Seller Phone</button>
@@ -41,7 +54,7 @@ const CarCard = (params) => {
       </div>
       
           
-    </div>
+    </Link>
   )
 }
 

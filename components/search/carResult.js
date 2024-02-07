@@ -20,7 +20,7 @@ async function getData(props) {
     if (adType) searchParams.append('adType', adType);
     if (page) searchParams.append('page', page);
     if (make) searchParams.append('make', make);
-    if (model) searchParams.append('make', model);
+    if (model) searchParams.append('model', model);
   
     const dynamicSearchURL = `/inventory?${searchParams.toString()}`;
   
@@ -49,12 +49,15 @@ const CarResult = async (params) => {
         cars.map((car)=>(
           <CarCard
         img=""
+        id={car.stockid}
         title={car.title}
         price={formatAmount(car.price)}
         year={car.year}
         registration={car.registration}
         mileage={car.mileage.toLocaleString()}
         engine={car.engine}
+        featured={car.featured}
+        gpcar={car.gpcar}
         time={formatTimeDifference(car.date)}
       />
         ))
