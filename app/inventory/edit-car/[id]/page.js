@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { search, searchCities } from '@/app/liveSearch/actions'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -8,8 +8,30 @@ import CarCard from '@/components/search/carCard';
 
 import urls from '@/static/urls';
 
+async function getData(id, jwtToken) {
+    const url = `${urls.APIURL}/edit-car/${id}`;
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${jwtToken}`,
+      },
+      next: { revalidate: 1 }
+    });
+  
+    if (!res.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    // console.log(await res.json())
+    // const finalResult = await res.json()
+    return  res.json();
+  }
+  
 
-const page = () => {
+const page = async ({params}) => {
+    const id = params.id
+    // const data = await getData(id);
+    // const [carData, setCarData] = useState()
+
+    // setCarData(data)
     const [check, setCheck] = useState({"location":false, "model": false, "registration": false})
     const [message, setMessage] = useState({'message':"", "type":""});
     const [loading, setLoading] = useState(false)
@@ -294,7 +316,7 @@ const page = () => {
     
         try {
           const response = await fetch(apiUrl, {
-            method: 'POST',
+            method: 'PATCH',
             headers,
             body: JSON.stringify(carData),
           });
@@ -302,7 +324,7 @@ const page = () => {
           if (response.ok) {
             const {data} =  await response.json()
             notify("Car Poster Successfully", "alert-success")
-            await uploadImages(data.stockid, accessToken)
+            // await uploadImages(data.stockid, accessToken)
             notify("Your Car is Listed", "alert-success")
             console.log('Car posted successfully!');
             notify("Redirecting You..", "")
@@ -344,6 +366,41 @@ const page = () => {
         //   // Handle error accordingly
         // }
       };
+
+      useEffect(()=>{
+        const isAuthenticated = localStorage.getItem('authenticated');
+        if (!isAuthenticated) {
+            // If authenticated is true, navigate to the authenticated page
+            router.replace("/");
+          }
+          else{
+            const apikey = localStorage.getItem('jwtAccessToken');
+            if (apikey) {
+                getData(id, apikey)
+                  .then(data => {
+                    // setUser(data);
+                    console.log(data)
+                    setMake(data.make)
+                    setModel(data.model)
+                    setTitle(data.title)
+                    setLocation(data.location)
+                    setYear(data.year)
+                    setPrice(data.price)
+                    setMileage(data.mileage)
+                    setTransmission(data.transmission)
+                    setColor(data.color)
+                    setRegistration(data.registration)
+                    setSellerComments(data.sellerComments)
+                    // setGallery(data.gallery)
+                    
+                    
+                  })
+                  .catch(error => {
+                    console.error('Error fetching data:', error);
+                  });
+              }
+        }
+      },[])
 
   return (
     <main className='main'>
@@ -636,8 +693,8 @@ const page = () => {
           placeholder="Enter Details"onChange={(e) => {
               const value = e.target.value.replace(/\n/g, '<br>');
               setSellerComments(value);
-          }}>
-
+          }} value={sellerComments}>
+            
           </textarea>
 
         </div>

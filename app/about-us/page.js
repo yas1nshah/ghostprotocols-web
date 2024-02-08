@@ -6,14 +6,18 @@ import team from '@/static/team'
 const AboutUs = () => {
   return (
     <main className="main p-2">
-        <div className="text-xs breadcrumbs">
-            <ul>
-            <li><Link href={"/"}>Home</Link></li>  
-            <li>About Us</li>
-            </ul>
+        <div className="m-2">
+        <h1 className='text-2xl md:text-4xl font-semibold'>About Us</h1>
+        <div className="text-xs md:text-sm breadcrumbs ">
+              <ul>
+                <li><Link href={"/"}>Home</Link></li> 
+                <li><Link href={`/about-us`}>About Us</Link></li> 
+                
+              </ul>
         </div>
-        <h1 className="text-lg md:text-2xl font-semibold">About Us</h1>
-        
+        <hr className='opacity-30 border-base-content'/>
+      </div>
+
         <div className="p-4 md:py-6 my-2 bg-primary-light dark:bg-primary rounded-xl">
           <h2 className='text-lg md:text-2xl font-semibold mb-2'>Our Story</h2>
           <p className='text-sm md:text-base opacity-95'>At GhostProtocols, we are more than just a dealership; we are a gateway to a world of automotive excellence. Our story is one of passion, commitment, and a relentless pursuit of automotive perfection.

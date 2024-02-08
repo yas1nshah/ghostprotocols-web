@@ -1,10 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import urls from '@/static/urls';
+import CarCard from './carCard.cmp';
+import formatAmount from '@/utils/foramt-price';
+import formatTimeDifference from '@/utils/format-date';
 
-async function getData(apikey) {
+async function getData(apikey = localStorage.getItem("jwtAccessToken")) {
   const url = `${urls.APIURL}/my-cars`;
   try {
     const response = await fetch(url, {
@@ -15,35 +17,33 @@ async function getData(apikey) {
     });
 
     if (response.ok) {
-        console.log(await response.json())
-      return await response.json(); // Return the JSON data directly
+      const data = await response.json(); // Parse the JSON data
+      return data.mycars; // Return the array of cars
     } else {
-      // Handle error
       console.error(`Failed to fetch data`);
       throw new Error('Failed to fetch data');
     }
   } catch (error) {
-    // Handle network or other errors
     console.error(`Error while fetching data:`, error.toString());
-    throw error; // Rethrow the error to propagate it further
+    throw error;
   }
 }
 
 const Page = () => {
-  const [user, setUser] = useState({});
+  const [cars, setCars] = useState([])
 
   useEffect(() => {
-    const apikey = localStorage.getItem('jwtAccessToken');
-    if (apikey) {
-      getData(apikey)
-        .then(data => {
-          setUser(data);
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        });
-    }
-  }, []); // Depend on apikey
+    const fetchData = async () => {
+      try {
+        const myCars = await getData();
+        setCars(myCars);
+      } catch (error) {
+        // Handle error if needed
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <main className="main">
@@ -59,7 +59,25 @@ const Page = () => {
         <hr className='opacity-30 border-base-content' />
       </div>
 
-      
+      <div className="m-2">
+        {cars.length > 0 &&
+          cars.map((car, index) => (
+            <CarCard
+              key={index} // Ensure each item in the list has a unique key
+              img=""
+              id={car.stockid}
+              title={car.title}
+              price={formatAmount(car.price)}
+              year={car.year}
+              registration={car.registration}
+              mileage={car.mileage.toLocaleString()}
+              engine={car.engine}
+              featured={car.featured}
+              gpcar={car.gpcar}
+              time={formatTimeDifference(car.date)}
+            />
+          ))}
+      </div>
     </main>
   );
 }
