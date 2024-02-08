@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import urls from '@/static/urls';
+import urls from '@/static-files/urls';
 import formatTimeDifference from '@/utils/format-date';
 
 const getPlan = (limit)=>{

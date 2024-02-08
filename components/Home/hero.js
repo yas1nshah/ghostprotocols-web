@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import Image from 'next/image'
 
-import categories from '@/static/categories'
+import categories from '@/static-files/categories'
 import Gallery from "@/components/Home/gallery";
 import Link from 'next/link'
 

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { search } from '@/app/liveSearch/actions'
-import menu from '@/static/menu'
+import menu from '@/static-files/menu'
 import SearchBar from './searchBar'
 
 const Navbar = () => {

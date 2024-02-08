@@ -1,5 +1,5 @@
 import React from 'react'
-import urls from '@/static/urls'
+import urls from '@/static-files/urls'
 import Link from 'next/link'
 import formatAmount from '@/utils/foramt-price'
 import formatTimeDifference from '@/utils/format-date'

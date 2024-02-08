@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import CarSlider from "@/components/Home/carSlider";
 import Hero from "@/components/Home/hero";
-import urls from "@/static/urls";
+import urls from "@/static-files/urls";
 
 async function getData() {
   const res = await fetch(`${urls.APIURL}/home`,{ next: { revalidate: 7200 } })

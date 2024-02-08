@@ -2,7 +2,7 @@
 import CarGallery from "@/components/CarDetails/CarGallery";
 import Image from "next/image";
 import Link from "next/link";
-import urls from "@/static/urls";
+import urls from "@/static-files/urls";
 import formatTimeDifference from "@/utils/format-date";
 import formatAmount from "@/utils/foramt-price";
 

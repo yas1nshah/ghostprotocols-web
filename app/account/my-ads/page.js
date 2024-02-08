@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import urls from '@/static/urls';
+import urls from '@/static-files/urls';
 import CarCard from './carCard.cmp';
 import formatAmount from '@/utils/foramt-price';
 import formatTimeDifference from '@/utils/format-date';

@@ -1,6 +1,6 @@
 'use server'
-import models from "@/static/models";
-import cities from "@/static/cities";
+import models from "@/static-files/models";
+import cities from "@/static-files/cities";
 
 export async function search(keyword) {
   // Filter models based on the keyword in their title

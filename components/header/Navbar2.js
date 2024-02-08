@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { search } from '@/app/liveSearch/actions'
 import { useRouter } from 'next/navigation'
-import menu from '@/static/menu'
+import menu from '@/static-files/menu'
 import SearchBar from './searchBar'
 
 

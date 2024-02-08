@@ -1,6 +1,6 @@
 import React from 'react'
 import CarCard from './carCard'
-import urls from '@/static/urls'
+import urls from '@/static-files/urls'
 import formatAmount from '@/utils/foramt-price'
 import formatTimeDifference from '@/utils/format-date'
 

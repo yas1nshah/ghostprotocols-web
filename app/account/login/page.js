@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import urls from '@/static/urls';
+import urls from '@/static-files/urls';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 

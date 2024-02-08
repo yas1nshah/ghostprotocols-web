@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import menu from '@/static/menu'
+import menu from '@/static-files/menu'
 import Link from 'next/link'
 import Script from 'next/script'
 

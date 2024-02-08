@@ -2,8 +2,8 @@ import Image from "next/image";
 
 import CarSlider from "@/components/Home/carSlider";
 import Hero from "@/components/Home/hero";
-import urls from "@/static/urls";
-import services from "@/static/services";
+import urls from "@/static-files/urls";
+import services from "@/static-files/services";
 import Link from "next/link";
 
 async function getData() {

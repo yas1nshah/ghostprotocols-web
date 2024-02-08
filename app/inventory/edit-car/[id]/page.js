@@ -6,7 +6,7 @@ import Link from 'next/link'
 import formatAmount from '@/utils/foramt-price';
 import CarCard from '@/components/search/carCard';
 
-import urls from '@/static/urls';
+import urls from '@/static-files/urls';
 
 async function getData(id, jwtToken) {
     const url = `${urls.APIURL}/edit-car/${id}`;

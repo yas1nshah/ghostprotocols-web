@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 // import { cookies } from 'next/headers'
 import Link from 'next/link'
-import urls from '@/static/urls'
+import urls from '@/static-files/urls'
 
 const page = () => {
     const [accType, setAccType] = useState(false);
