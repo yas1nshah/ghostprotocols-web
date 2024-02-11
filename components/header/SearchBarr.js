@@ -1,13 +1,11 @@
 'use client'
 import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { search } from '@/app/liveSearch/actions'
 import { useRouter } from 'next/navigation'
 
 
-const SearchBar = (params) => {
+const SearchBarr = (params) => {
     const setSearchBar = params.setSearchBar
     const [keyword, setKeyword] = useState('');
     const [result, setResult] = useState([{ "id":"000","model":"Type Something To Get Started"}]);
@@ -152,4 +150,4 @@ const SearchBar = (params) => {
   )
 }
 
-export default SearchBar
+export default SearchBarr
