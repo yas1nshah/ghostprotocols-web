@@ -5,21 +5,25 @@ import Hero from "@/components/Home/hero";
 import urls from "@/static-files/urls";
 import services from "@/static-files/services";
 import Link from "next/link";
+import { Metadata } from "next";
 
-async function getData() {
-  const res = await fetch(`${urls.APIURL}/home`,{ next: { revalidate: 7200 } })
+export const metadata = {
+  title: "Buy & Sell Cars in Pakistan - Get Your Ride Now.",
+  description: "Proudly providing unusual Car Needs in Pakistan. Buy & Sell Cars. List Your Car Now and let the Ghosts Work.",
 
- 
+};
+
+async function getHomeData() {
+  const res = await fetch(`${urls.APIURL}/home`,{ next: { revalidate: 500} })
+
   if (!res.ok) {
     throw new Error('Failed to fetch data')
   }
-  
-  // console.log(res.json.toString())
   return res.json()
 }
 
 export default async function Home() {
-  const homeData = await getData();
+  const homeData = await getHomeData();
   return (
     <main className="main">
       

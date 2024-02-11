@@ -46,9 +46,9 @@ const Gallery = (props) => {
               className="w-full h-full object-cover flex-shrink-0 flex-grow-0 transition-all ease-out duration-500"
               style={{ transform: `translateX(${currentImgIndex * -100}%)` }}
               src={img}
-              width={800}
-              height={800}
-              alt="Car Image"
+              width={1000}
+              height={1000}
+              alt="Ghost Protocols Hero Image"
             />
           ))}
         </div>

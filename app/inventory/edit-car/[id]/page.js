@@ -1,68 +1,68 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import { search, searchCities } from '@/app/liveSearch/actions'
+import React from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import urls from '@/static-files/urls'
 import Link from 'next/link'
-import formatAmount from '@/utils/foramt-price';
-import CarCard from '@/components/search/carCard';
+import CarCard from '@/components/search/carCard'
+import formatAmount from '@/utils/foramt-price'
 
-import urls from '@/static-files/urls';
+const EditCarPage = ({params}) => {
+    const {id} = params
+    const router = useRouter()
 
-async function getData(id, jwtToken) {
-    const url = `${urls.APIURL}/edit-car/${id}`;
-    const res = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${jwtToken}`,
-      },
-      next: { revalidate: 1 }
-    });
-  
-    if (!res.ok) {
-      throw new Error('Failed to fetch data');
-    }
-    // console.log(await res.json())
-    // const finalResult = await res.json()
-    return  res.json();
-  }
-  
-
-const page = async ({params}) => {
-    const id = params.id
-    // const data = await getData(id);
-    // const [carData, setCarData] = useState()
-
-    // setCarData(data)
     const [check, setCheck] = useState({"location":false, "model": false, "registration": false})
     const [message, setMessage] = useState({'message':"", "type":""});
     const [loading, setLoading] = useState(false)
-    const router = useRouter()
     const notify = (message, type)=> {
-      setMessage({"message":message, "type":type})
-      // setTimeout(() => setMessage({ message: '', type: '' }), 5000);
-    }
+        setMessage({"message":message, "type":type})
+        // setTimeout(() => setMessage({ message: '', type: '' }), 5000);
+      }
     
-    const [gallery, setGallery] = useState([])
-    const [galleryIndex, setGalleryIndex] = useState(0)
-
     const [title, setTitle] = useState('')
 
-    const [make, setMake] = useState()
-    const [model, setModel] = useState()
-    const [year, setYear] = useState()
-    const [price, setPrice] = useState(0)
+    const [carData, setCarData] = useState(
+        {   "gallery":[],
+            "galleryIndex": "",
+            "title": "",
+            "make":"",
+            "model":"",
+            "year":"",
+            "price":"",
+            "location":"",
+            "mileage":"",
+            "transmission":"",
+            "engine":"",
+            "engineCapacity":"",
+            "registration":"",
+            "body":"",
+            "color":"",
+            "sellerComments":"",
+        }
+    )
 
-    const [location, setLocation] = useState()
-    const [mileage, setMileage] = useState(0)    
-    const [transmission, setTransmission] = useState()
-
-    const [engine, setEngine] = useState()
-    const [engineCapacity, setEngineCapacity] = useState()
-    const [registration, setRegistration] = useState()
-    const [body, setBody] = useState()
-    const [color, setColor] = useState()
-
-    const [sellerComments, setSellerComments] = useState()
-
+    const [oldCarData, setOldCarData] = useState(
+        {   "gallery":[],
+            "galleryIndex": null,
+            "title": null,
+            "make":null,
+            "model":null,
+            "year":null,
+            "price":null,
+            "location":null,
+            "mileage":null,
+            "transmission":null,
+            "engine":null,
+            "engineCapacity":null,
+            "registration":null,
+            "body":null,
+            "Color":null,
+            "sellerComments":null,
+        }
+    )
+    const [editGallery, setEditGallery] = useState()
+    
+    const [imgPrev, setimgPrev] = useState(false)
     // ? Modle
     const [showModels, setShowModels] = useState(false)
     const [modelData, setModelData] = useState([ 
@@ -150,7 +150,11 @@ const page = async ({params}) => {
         setRegData(result);
     }
 
+
+
     // ? Gallery
+
+    const [newGallery, setNewGallery] = useState([])
       const handleFileChange = async (e) => {
         const files = e.target.files;
     
@@ -161,7 +165,7 @@ const page = async ({params}) => {
         );
     
         // Ensure that the total number of selected files is not more than 5
-        if (selectedFiles.length + gallery.length > 5) {
+        if (selectedFiles.length + newGallery.length > 5) {
             alert('You can only select up to 5 images.');
             return;
         }
@@ -195,41 +199,67 @@ const page = async ({params}) => {
         }));
     
         // Update the gallery state with the compressed images
-        setGallery(prevGallery => [...prevGallery, ...compressedImages]);
+        // setCarData({...carData, gallery : carData.gallery})
+        setNewGallery(prevGallery => [...prevGallery, ...compressedImages]);
       };
   
       const removeImage = (index) => {
-        
-        setGallery((prevGallery) => {
-          const newGallery = [...prevGallery];
-          newGallery.splice(index, 1);
-          return newGallery;
+        let newGalleryIndex = carData.galleryIndex;
+      
+        if (newGallery.length === 1) {
+          // If there's only one image left in newGallery, set galleryIndex to 0
+          newGalleryIndex = 0;
+        } else if (index === carData.galleryIndex) {
+          // If the removed image is the currently selected one, adjust galleryIndex
+          newGalleryIndex = index === 0 ? 0 : index - 1;
+        }
+      
+        // Remove the image from newGallery
+        const updatedGallery = newGallery.filter((_, idx) => idx !== index);
+      
+        // Update the state
+        setNewGallery(updatedGallery);
+      
+        // Update the galleryIndex in carData
+        setCarData({
+          ...carData,
+          galleryIndex: newGalleryIndex
         });
-        if (gallery.length === 0)
-        {
-          setGalleryIndex(0)
-        }
-        else if(gallery.length > 1)
-        {
-
-          setGalleryIndex(index-1)
-        }
-        else{
-          setGalleryIndex(0)
-        }
-      }
-
-      const uploadImages = async ( stockId, apiKey = localStorage.getItem('jwtAccessToken')) => {
+      };
       
+
+      const uploadImages = async (stockId, apiKey = localStorage.getItem('jwtAccessToken')) => {
         const url = `${urls.APIURL}/add-car/gallery`; // Replace with your actual API endpoint
+        const deleteUrl = `${urls.APIURL}/delete-gallery`; // Replace with your actual delete API endpoint
       
-        for (let index = 0; index < gallery.length; index++) {
-          const image = gallery[index];
-          const makeModel = `${make}-${model}`; // Assuming make and model are available
-          const imageName = `${makeModel}-${stockId}-${index + 1}.webp`;
+        // Delete existing gallery images first
+        try {
+          const deleteResponse = await fetch(deleteUrl, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ car_id: stockId }), // Assuming the server expects a JSON payload with car_id
+          });
+      
+          if (!deleteResponse.ok) {
+            throw new Error(`Failed to delete existing gallery images: ${deleteResponse.statusText}`);
+          }
+        } catch (error) {
+          // Handle error while deleting existing gallery images
+          console.error('Error while deleting existing gallery images:', error);
+          return; // Exit function if deleting gallery images fails
+        }
+      
+        // After deleting, upload new gallery images
+        for (let index = 0; index < newGallery.length; index++) {
+          const image = newGallery[index];
+          const makeModel = `${carData.make}-${carData.model}`; // Assuming make and model are available
+          const imageName = `${makeModel}-${id}-${index + 1}.webp`;
       
           const formData = new FormData();
-          formData.append('car', String(stockId)); // Replace with your actual car ID
+          formData.append('car', String(id)); // Replace with your actual car ID
           formData.append('image', new File([image], imageName, { type: image.type }));
       
           try {
@@ -243,30 +273,53 @@ const page = async ({params}) => {
       
             if (response.ok) {
               // Image uploaded successfully
-              notify(`Image ${index + 1} uploaded successfully`, "")
+              notify(`Image ${index + 1} uploaded successfully`, "");
               console.log(`Image ${index + 1} uploaded successfully`);
             } else {
               // Handle error
-              loading(false)
-              notify(`Failed to upload image ${index + 1}`, "alert-error")
+              loading(false);
+              notify(`Failed to upload image ${index + 1}`, "alert-error");
               console.error(`Failed to upload image ${index + 1}:`, response.message);
             }
           } catch (error) {
             // Handle network or other errors
-            loading(false)
-            notify(`Error while uploading image ${index + 1}`, "alert-error")
+            loading(false);
+            notify(`Error while uploading image ${index + 1}`, "alert-error");
             console.error(`Error while uploading image ${index + 1}:`, error.toString());
           }
         }
       };
       
-      
-      
+
+      // Create a function to compare two objects and return the keys with different values
+        const getDifferentKeys = (obj1, obj2) => {
+            const diffKeys = [];
+            for (const key in obj1) {
+            if (obj1.hasOwnProperty(key) && obj2.hasOwnProperty(key)) {
+                if (obj1[key] !== obj2[key]) {
+                diffKeys.push(key);
+                }
+            }
+            }
+            return diffKeys;
+        };
+        
+        // Create a function to filter object properties based on keys
+        const filterObjectByKeys = (obj, keys) => {
+            const filteredObj = {};
+            for (const key in obj) {
+            if (keys.includes(key)) {
+                filteredObj[key] = obj[key];
+            }
+            }
+            return filteredObj;
+        };
+
       const postCar = async (e) => {
         e.preventDefault();
         setLoading(true)
         // Assuming you have an endpoint to send the data to
-        const apiUrl = `${urls.APIURL}/add-car`; // Replace with your actual API endpoint
+        const apiUrl = `${urls.APIURL}/edit-car/${id}`; // Replace with your actual API endpoint
     
         // Retrieve access token from localStorage
         const accessToken = localStorage.getItem('jwtAccessToken');
@@ -280,23 +333,33 @@ const page = async ({params}) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         };
-    
-        const carData = {
-            "galleryIndex": String(galleryIndex),
-            "make": String(make),
-            "model": String(model),
-            "year": String(year),
-            "price": String(price),
-            "location": String(location),
-            "mileage": String(mileage),
-            "engine": String(engine),
-            "engineCapacity": String(engineCapacity), // This
-            "transmission": String(transmission), // this
-            "registration": String(registration),
-            "body": String(body),
-            "color": String(color),
-            "sellerComments": String(sellerComments)
+
+        // Get the keys with different values between carData and oldCarData
+        const differentKeys = getDifferentKeys(carData, oldCarData);
+
+        // Filter carData to include only the different fields
+        const updatedCarData = filterObjectByKeys(carData, differentKeys);
+        
+        const carDataForPost = {
+            ...updatedCarData,
+            // Add additional fields if needed
           };
+        // const carDataForPost = {
+        //     "galleryIndex": String(carData.galleryIndex),
+        //     "make": String(carData.make),
+        //     "model": String(carData.model),
+        //     "year": String(carData.year),
+        //     "price": String(carData.price),
+        //     "location": String(carData.location),
+        //     "mileage": String(carData.mileage),
+        //     "engine": String(carData.engine),
+        //     "engineCapacity": String(carData.engineCapacity), // This
+        //     "transmission": String(carData.transmission), // this
+        //     "registration": String(carData.registration),
+        //     "body": String(carData.body),
+        //     "color": String(carData.color),
+        //     "sellerComments": String(carData.sellerComments)
+        //   };
         // const carData = {
         //     "galleryIndex": "1",
         //     "make": "Toyota",
@@ -311,37 +374,49 @@ const page = async ({params}) => {
         //     "color": "Red",
         //     "sellerComments": "This is a nice car"
         // }
-          
+        
+        if(editGallery)
+        {
+            if(carData.galleryIndex> newGallery.length)
+            {
+                alert("Select Featured Image")
+                return
+            }
+        }
         
     
         try {
           const response = await fetch(apiUrl, {
             method: 'PATCH',
             headers,
-            body: JSON.stringify(carData),
+            body: JSON.stringify(carDataForPost),
           });
     
           if (response.ok) {
             const {data} =  await response.json()
             notify("Car Poster Successfully", "alert-success")
-            // await uploadImages(data.stockid, accessToken)
+
+            if(editGallery && newGallery.length > 0)
+            {       
+                await uploadImages(id, accessToken)
+            }
             notify("Your Car is Listed", "alert-success")
             console.log('Car posted successfully!');
             notify("Redirecting You..", "")
             // You can handle success here
-
-            setTimeout(() => {
-              router.push("/account");
-          }, 1000);
+            setLoading(false)
+        //     setTimeout(() => {
+        //       router.push("/account");
+        //   }, 1000);
           } else {
             notify("Failed to Post Car", "alert-error")
-            loading(false)
+            setLoading(false)
             console.error('Failed to post car:', response.statusText);
             // Handle error accordingly
           }
         } catch (error) {
           notify("Failed to Post Car", "alert-error")
-          loading(false)
+          setLoading(false)
           console.error('Error while posting car:', error);
           // Handle error accordingly
         }
@@ -367,73 +442,107 @@ const page = async ({params}) => {
         // }
       };
 
-      useEffect(()=>{
-        const isAuthenticated = localStorage.getItem('authenticated');
-        if (!isAuthenticated) {
-            // If authenticated is true, navigate to the authenticated page
-            router.replace("/");
-          }
-          else{
-            const apikey = localStorage.getItem('jwtAccessToken');
-            if (apikey) {
-                getData(id, apikey)
-                  .then(data => {
-                    // setUser(data);
-                    console.log(data)
-                    setMake(data.make)
-                    setModel(data.model)
-                    setTitle(data.title)
-                    setLocation(data.location)
-                    setYear(data.year)
-                    setPrice(data.price)
-                    setMileage(data.mileage)
-                    setTransmission(data.transmission)
-                    setColor(data.color)
-                    setRegistration(data.registration)
-                    setSellerComments(data.sellerComments)
-                    // setGallery(data.gallery)
-                    
-                    
-                  })
-                  .catch(error => {
-                    console.error('Error fetching data:', error);
-                  });
-              }
+
+    // ! Get Data
+    const getData = async (apikey) => {
+        const url = `${urls.APIURL}/edit-car/${id}`; // Make sure urls and id are defined
+    
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${apikey}`
+                }
+            });
+    
+            if (res.ok) {
+                console.log(res.status)
+                return await res.json();
+            } else {
+                if(res.status === 403)
+                {                   
+                    throw new Error("You're Not the Owner of the Car.");
+                }
+                else if(res.status === 404)
+                {                   
+                    throw new Error("Car Not Found");
+                }
+                else {
+                throw new Error('Failed to fetch data');}
+            }
+        } catch (error) {
+            console.error(`Error while fetching data:`, error.toString());
+            throw error; // Rethrow the error to propagate it further
         }
-      },[])
+    }
+    
+    // ! Redirection or Loading Data.
+    useEffect(() => {
+        const status = localStorage.getItem("authenticated");
+        if (status !== "true") {
+            router.replace("/account/login");
+        } else {
+            const apikey = localStorage.getItem("jwtAccessToken");
+            if (apikey) {
+                getData(apikey)
+                    .then(result => {setCarData(result); setOldCarData(result), setTitle(result.title); setimgPrev(true)})
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+        }
+    }, []);
+
+
 
   return (
     <main className='main'>
       <div className="m-2">
-          <h1 className='text-2xl md:text-4xl font-semibold'>Add Car</h1>
+          <h1 className='text-2xl md:text-4xl font-semibold'>Edit Car</h1>
           <div className="text-xs md:text-sm breadcrumbs ">
                 <ul>
                   <li><Link href={"/"}>Home</Link></li> 
                   <li><Link href={`/inventory`}>Inventory</Link></li> 
-                  <li>Add Car</li>
+                  <li>Edit Car</li>
                 </ul>
           </div>
           <hr className='opacity-30 border-base-content'/>
       </div>
 
-      { message.message &&
+      {/* { message.message &&
         <div className="m-2">
         <div role="alert" className={`alert ${message.type}`}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-white shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
           <span>{message.message}</span>
         </div>
       </div>
-      }
+      } */}
+        <div className="text-end">
+            <button onClick={()=>document.getElementById('my_modal_5').showModal()} className="btn btn-success m-2" >Feature Car</button>
+            
+            <button onClick={()=>document.getElementById('my_modal_5').showModal()} className="btn btn-error m-2" >Delete Car</button>
+            <dialog id="my_modal_5" className="text-start modal modal-bottom sm:modal-middle">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Are you Sure?!😖</h3>
+                    <p className="py-4">Press DELETE to remove your car from Ghost Protocols.</p>
+                    <div className="modal-action">
+                    <form method="dialog">
+                        {/* if there is a button in form, it will close the modal */}
+                        <div className="btn btn-error m-2" onClick={()=>{}}>Delete</div>
+                        <button className="btn m-2 bg-primary">Close</button>
+                    </form>
+                    </div>
+                </div>
+            </dialog>
+        </div>
         <div className="py-4 m-2">
           <h2 className="text-base p-2">Live Preview:</h2>
             <CarCard
-                img=""
+                img={editGallery && carData.galleryIndex < newGallery.length && newGallery.length > 0 ? URL.createObjectURL(newGallery[carData.galleryIndex]) : (imgPrev ? `http://127.0.0.1:8000/${oldCarData?.gallery[oldCarData?.galleryIndex]}` : "")}
                 title={title}
-                price={formatAmount(price)}
-                year={year}
-                registration={registration}
-                mileage={mileage.toLocaleString()}
-                engine={engine}
+                price={formatAmount(carData.price)}
+                year={carData.year}
+                registration={carData.registration}
+                mileage={carData.mileage.toLocaleString()}
+                engine={carData.engine}
                 time={"0 seconds "}
             />
         </div>
@@ -444,15 +553,36 @@ const page = async ({params}) => {
         {/* Select Gallery */}
         <div className='relative flex flex-col mb-4'>
           <span className='label-text-alt'>Gallery</span>
-          <div>
+          {!editGallery && <div className="flex gap-2">
+            {carData.gallery.map((url, index) => (
+                    <div key={index} className={`relative m-4 rounded-xl ${index === carData.galleryIndex && "border-2"} border-secondary`}
+                    onClick={()=>setCarData({
+                            ...carData,
+                            galleryIndex: index
+                        })}>
+                        <img
+                            className='w-20 h-20 object-cover rounded-xl'
+                            src={`http://127.0.0.1:8000${url}`}
+                            alt={`Image ${index + 1}`}
+                            
+                        />
+                     </div>
+                    ))}
+          </div>}
+            
+        <div onClick={()=>setEditGallery(prev => !prev)} className="btn">{editGallery ? "Cancel Change" : "Change Images"}</div>
+          {editGallery && <><div>
           {
-            gallery.length > 0 && (
+            newGallery.length > 0 && (
             
             <div className='flex gap-2'>
 
-                {gallery.map((file, index) => (
-                    <div key={index} className={`relative m-4 rounded-xl ${index === galleryIndex && "border-2"} border-secondary`}
-                    onClick={()=>setGalleryIndex(index)}>
+                {newGallery.map((file, index) => (
+                    <div key={index} className={`relative m-4 rounded-xl ${index === carData.galleryIndex && "border-2"} border-secondary`}
+                    onClick={()=>setCarData({
+                            ...carData,
+                            galleryIndex: index
+                        })}>
                         <img
                             className='w-20 h-20 object-cover rounded-xl'
                             src={URL.createObjectURL(file)}
@@ -468,7 +598,7 @@ const page = async ({params}) => {
           </div>
           <input type="file"  onChange={handleFileChange}
             multiple className="file-input file-input-bordered w-full max-w-xs" />
-            <p className='label-text-alt'>{"Select Upto 5 Images"}</p>
+            <p className='label-text-alt'>{"Select Upto 5 Images"}</p></>}
         </div>
 
         {/* Select Location */}
@@ -479,10 +609,13 @@ const page = async ({params}) => {
             placeholder='Choose Your Location'
             className='input w-full bg-primary-light dark:bg-primary mb-4'
             onChange={(e) => {
-                setLocation(e.target.value)
-                getCities(e.target.value);
-            }}
-            value={location}
+                        setCarData({
+                            ...carData,
+                            location: e.target.value
+                        });
+                        getCities(e.target.value);
+                    }}
+            value={carData.location}
             onFocus={() => setShowCity(true)}
             onBlur={(e)=> setShowCity(false)}
           />
@@ -495,7 +628,10 @@ const page = async ({params}) => {
                   cityData.map((city, index) => (
                     <div key={index} className='p-2 cursor-pointer'
                       onMouseDown={() => {
-                        setLocation(city.name);
+                        setCarData({
+                            ...carData,
+                            location: city.name
+                        });
                         setCheck(prevCheck => ({ ...prevCheck, registration: true }));
                         setShowCity(false);
                       }}
@@ -537,11 +673,15 @@ const page = async ({params}) => {
                   modelData.map((model, index) => (
                     <div key={index} className='p-2'
                       onMouseDown={() => {
-                        setMake(model.make);
-                        setModel(model.model);
-                        setEngine(model.engineType);
-                        setEngineCapacity(model.engineCapacity);
-                        setBody(model.bodyType);
+                        setCarData({
+                            ...carData,
+                            make: model.make,
+                            model:model.model,
+                            engine:model.engineType,
+                            engineCapacity:model.engineCapacity,
+                            body:model.bodyType, 
+                        });
+                       
                         setTitle(model.title); // Update title here
                         setCheck(prevCheck => ({ ...prevCheck, model: true }));
                         setShowModels(false);
@@ -572,11 +712,13 @@ const page = async ({params}) => {
                 type='number'
                 placeholder='Enter Year'
                 className='input w-full bg-primary-light dark:bg-primary mb-4'
-                onChange={(e) =>setYear(e.target.value)}
-                // onFocus={() => setShowModels(true)}
-                // min={1950}
-                // max={2024}s
-                value={year}
+                onChange={(e) =>
+                    setCarData({...carData,year: e.target.value})
+                }
+
+                min={1950}
+                max={2024}
+                value={carData.year}
             />
 
             </div>
@@ -588,12 +730,13 @@ const page = async ({params}) => {
                 type='number'
                 placeholder='Enter Price'
                 className='input w-full bg-primary-light dark:bg-primary '
-                onChange={(e) =>setPrice( parseInt(e.target.value, 10))}
-                // onFocus={() => setShowModels(true)}
+                onChange={(e) =>
+                    setCarData({...carData, price: e.target.value})
+                }
                 // min={100000}
-                value={price }
+                value={carData.price }
             />
-            <p className='label-text-alt mb-4 mt-2 text-end'>{formatAmount(price)} </p>
+            <p className='label-text-alt mb-4 mt-2 text-end'>{formatAmount(carData.price)} </p>
 
             </div>
         </div>
@@ -607,12 +750,13 @@ const page = async ({params}) => {
                 type='number'
                 placeholder='Enter Mileage'
                 className='input w-full bg-primary-light dark:bg-primary '
-                onChange={(e) =>setMileage(e.target.value)}
-                // onFocus={() => setShowModels(true)}
+                onChange={(e) =>
+                    setCarData({...carData, mileage: e.target.value})
+                }
                 
-                value={mileage}
+                value={carData.mileage}
             />
-            <p className='label-text-alt mb-4 mt-2 text-end'>{mileage.toLocaleString()} km</p>
+            <p className='label-text-alt mb-4 mt-2 text-end'>{ carData.mileage.toLocaleString()} km</p>
 
             </div>
 
@@ -620,10 +764,13 @@ const page = async ({params}) => {
             <div className='relative w-full md:w-1/3'>
             <span className='label-text-alt'>Transmission</span>
             <select className="select select-bordered w-full bg-primary"
-                value={transmission}
-                onChange={(e)=>setTransmission(e.target.value)}>
+                value={carData.transmission}
+                onChange={(e) =>
+                    setCarData({...carData, transmission: e.target.value})
+                }
+                >
                     <option className='text-base-content bg-black' disabled>Select Transmission</option>
-                    <option className='text-base-content bg-black' value={0}>Manual</option>
+                    <option className='text-base-content bg-black'  value={0}>Manual</option>
                     <option className='text-base-content bg-black' value={1}>Automatic</option>
                     
             </select>
@@ -633,8 +780,11 @@ const page = async ({params}) => {
             <div className='relative mb-4 w-full md:w-1/3'>
             <p className='label-text-alt'>Color</p>
             <select className="select select-bordered w-full bg-primary"
-                value={color}
-                onChange={(e)=>setColor(e.target.value)}>
+                value={carData.color}
+                onChange={(e) =>
+                    setCarData({...carData, transmission: e.target.value})
+                }
+                >
                     <option className='text-base-content bg-black' disabled>Select Color</option>
                     <option className='text-base-content bg-black'>Red</option>
                     <option className='text-base-content bg-black'>Black</option>
@@ -651,13 +801,14 @@ const page = async ({params}) => {
             type='text'
             placeholder='Choose Your Registration'
             className='input w-full bg-primary-light dark:bg-primary mb-4'
-            onChange={(e) => {
-                setRegistration(e.target.value)
-                getReg(e.target.value);
-            }}
+
+            onChange={(e) =>{
+                    setCarData({...carData, registration: e.target.value});
+                    getReg(e.target.value);}
+                }
             onFocus={() => setShowReg(true)}
             onBlur={() => setShowReg(false)}
-            value={registration}
+            value={carData.registration}
           />
 
           {
@@ -690,11 +841,18 @@ const page = async ({params}) => {
         <div className='relative'>
           <span className='label-text-alt'>Seller Comments</span>
           <textarea className="textarea bg-primary w-full min-h-64" 
-          placeholder="Enter Details"onChange={(e) => {
-              const value = e.target.value.replace(/\n/g, '<br>');
-              setSellerComments(value);
-          }} value={sellerComments}>
-            
+          placeholder="Enter Details" 
+          value={carData.sellerComments}
+          
+        //   onChange={(e) => {
+        //       const value = e.target.value.replace(/\n/g, '<br>');
+        //       setSellerComments(value);
+        //   }}
+        onChange={(e) =>
+                    setCarData({...carData, sellerComments: e.target.value})
+                }
+          >
+
           </textarea>
 
         </div>
@@ -712,8 +870,7 @@ const page = async ({params}) => {
       </div>
       }
     </main>
-  );
-};
+  )
+}
 
-  
-export default page
+export default EditCarPage

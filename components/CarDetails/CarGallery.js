@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 
 const CarGallery = (props) => {
-  const [currentImgIndex, updateImgIndex] = useState(1);
+  const [currentImgIndex, updateImgIndex] = useState(0);
 
   const handleNext = () => {
     updateImgIndex((prev) => (prev + 1) % props.images.length);
@@ -50,9 +50,9 @@ const CarGallery = (props) => {
               key={index}
               className="w-full h-full object-cover flex-shrink-0 flex-grow-0 transition-all ease-out duration-500"
               style={{ transform: `translateX(${currentImgIndex * -100}%)` }}
-              src={`https://images.tixy.pk${newLink}`}
-              width={500}
-              height={500}
+              src={`https://images.ghostprotocols.pk${newLink}`}
+              width={1000}
+              height={1000}
               alt="Car Image"
             />
           )})}

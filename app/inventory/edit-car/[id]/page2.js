@@ -8,8 +8,30 @@ import CarCard from '@/components/search/carCard';
 
 import urls from '@/static-files/urls';
 
+async function getData(id, jwtToken) {
+    const url = `${urls.APIURL}/edit-car/${id}`;
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${jwtToken}`,
+      },
+      next: { revalidate: 1 }
+    });
+  
+    if (!res.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    // console.log(await res.json())
+    // const finalResult = await res.json()
+    return  res.json();
+  }
+  
 
-const page = () => {
+const page = async ({params}) => {
+    const id = params.id
+    // const data = await getData(id);
+    // const [carData, setCarData] = useState()
+
+    // setCarData(data)
     const [check, setCheck] = useState({"location":false, "model": false, "registration": false})
     const [message, setMessage] = useState({'message':"", "type":""});
     const [loading, setLoading] = useState(false)
@@ -31,23 +53,15 @@ const page = () => {
 
     const [location, setLocation] = useState()
     const [mileage, setMileage] = useState(0)    
-    const [transmission, setTransmission] = useState(1)
+    const [transmission, setTransmission] = useState()
 
     const [engine, setEngine] = useState()
     const [engineCapacity, setEngineCapacity] = useState()
     const [registration, setRegistration] = useState()
     const [body, setBody] = useState()
-    const [color, setColor] = useState("Black")
+    const [color, setColor] = useState()
 
     const [sellerComments, setSellerComments] = useState()
-
-    useEffect(()=>{
-      const status = localStorage.getItem("authenticated")
-      if(status != "true")
-      {
-        router.replace("/account/login")
-      }
-    })
 
     // ? Modle
     const [showModels, setShowModels] = useState(false)
@@ -114,64 +128,17 @@ const page = () => {
     },
      ])
 
-    const getModels = async (value) => {
-      
-      let searchResult;
-  
-      // Check local storage for models
-      const cachedModels = localStorage.getItem('models');
-      if (cachedModels) {
-          const parsedModels = JSON.parse(cachedModels);
-          console.log("client")
-          searchResult = parsedModels.filter(model =>
-              model.title.toLowerCase().includes(value.toLowerCase())
-          );
-          setModelData(searchResult)
-      } else {
-          // If models not found in local storage, fetch from server
-          searchResult = await search(value);
-          setModelData(searchResult);
-      }
-  
-      
-      setModelData(searchResult);
+    const getModels = async (keyword) => {
+        const result = await search(keyword);
+        setModelData(result);
     }
     // ? Location
     const [showCity, setShowCity] = useState(false)
     const [cityData, setCityData] = useState([{"id": 103, "name": "Lahore"}, {"id": 162, "name": "Rawalpindi"}, {"id": 85, "name": "Karachi"}, {"id": 130, "name": "Multan"}, {"id": 71, "name": "Islamabad"}, {"id": 50, "name": "Faisalabad"},])
 
     const getCities = async (keyword) => {
-
-        try {
-          let searchResult;
-      
-          // Check local storage for cities
-          const cachedCities = localStorage.getItem('cities');
-          if (cachedCities) {
-            const parsedCities = JSON.parse(cachedCities);
-            // Filter cities based on the keyword
-            searchResult = parsedCities.filter(city =>
-              city.name.toLowerCase().includes(keyword.toLowerCase())
-            );
-            setCityData(searchResult);
-          } else {
-            // If cities not found in local storage, fetch from server
-            const response = await fetch('/cities.json'); // Adjust the path as needed
-            const citiesData = await response.json();
-            // Store cities in local storage
-            localStorage.setItem('cities', JSON.stringify(citiesData));
-            // Filter cities based on the keyword
-            searchResult = citiesData.filter(city =>
-              city.name.toLowerCase().includes(keyword.toLowerCase())
-            );
-            setCityData(searchResult);
-          }
-      
-          
-        } catch (error) {
-          console.error('Error fetching cities:', error);
-          setResult([]);
-        }
+        const result = await searchCities(keyword);
+        setCityData(result);
     }
 
     // ? Registraion
@@ -179,37 +146,8 @@ const page = () => {
     const [RegData, setRegData] = useState([{"id": 103, "name": "Lahore"}, {"id": 162, "name": "Rawalpindi"}, {"id": 85, "name": "Karachi"}, {"id": 130, "name": "Multan"}, {"id": 71, "name": "Islamabad"}, {"id": 50, "name": "Faisalabad"}, {"id": 1111, "name": "Punjab"},{"id": 1112, "name": "Sindh"},{"id": 1113, "name": "KPK"},])
 
     const getReg = async (keyword) => {
-        
-        try {
-          let searchResult;
-      
-          // Check local storage for cities
-          const cachedCities = localStorage.getItem('cities');
-          if (cachedCities) {
-            const parsedCities = JSON.parse(cachedCities);
-            // Filter cities based on the keyword
-            searchResult = parsedCities.filter(city =>
-              city.name.toLowerCase().includes(keyword.toLowerCase())
-            );
-            setRegData(searchResult);
-          } else {
-            // If cities not found in local storage, fetch from server
-            const response = await fetch('/cities.json'); // Adjust the path as needed
-            const citiesData = await response.json();
-            // Store cities in local storage
-            localStorage.setItem('cities', JSON.stringify(citiesData));
-            // Filter cities based on the keyword
-            searchResult = citiesData.filter(city =>
-              city.name.toLowerCase().includes(keyword.toLowerCase())
-            );
-            setRegData(searchResult);
-          }
-      
-          
-        } catch (error) {
-          console.error('Error fetching cities:', error);
-          setRegData([]);
-        }
+        const result = await searchCities(keyword);
+        setRegData(result);
     }
 
     // ? Gallery
@@ -378,7 +316,7 @@ const page = () => {
     
         try {
           const response = await fetch(apiUrl, {
-            method: 'POST',
+            method: 'PATCH',
             headers,
             body: JSON.stringify(carData),
           });
@@ -386,7 +324,7 @@ const page = () => {
           if (response.ok) {
             const {data} =  await response.json()
             notify("Car Poster Successfully", "alert-success")
-            await uploadImages(data.stockid, accessToken)
+            // await uploadImages(data.stockid, accessToken)
             notify("Your Car is Listed", "alert-success")
             console.log('Car posted successfully!');
             notify("Redirecting You..", "")
@@ -397,8 +335,8 @@ const page = () => {
           }, 1000);
           } else {
             notify("Failed to Post Car", "alert-error")
-            setLoading(false)
-            console.error('Failed to post car:', response.msg);
+            loading(false)
+            console.error('Failed to post car:', response.statusText);
             // Handle error accordingly
           }
         } catch (error) {
@@ -429,6 +367,41 @@ const page = () => {
         // }
       };
 
+      useEffect(()=>{
+        const isAuthenticated = localStorage.getItem('authenticated');
+        if (!isAuthenticated) {
+            // If authenticated is true, navigate to the authenticated page
+            router.replace("/");
+          }
+          else{
+            const apikey = localStorage.getItem('jwtAccessToken');
+            if (apikey) {
+                getData(id, apikey)
+                  .then(data => {
+                    // setUser(data);
+                    console.log(data)
+                    setMake(data.make)
+                    setModel(data.model)
+                    setTitle(data.title)
+                    setLocation(data.location)
+                    setYear(data.year)
+                    setPrice(data.price)
+                    setMileage(data.mileage)
+                    setTransmission(data.transmission)
+                    setColor(data.color)
+                    setRegistration(data.registration)
+                    setSellerComments(data.sellerComments)
+                    // setGallery(data.gallery)
+                    
+                    
+                  })
+                  .catch(error => {
+                    console.error('Error fetching data:', error);
+                  });
+              }
+        }
+      },[])
+
   return (
     <main className='main'>
       <div className="m-2">
@@ -454,7 +427,7 @@ const page = () => {
         <div className="py-4 m-2">
           <h2 className="text-base p-2">Live Preview:</h2>
             <CarCard
-                img={(gallery.length > 0 && galleryIndex < gallery.length) ? URL.createObjectURL(gallery[galleryIndex]): ""}
+                img={ carData.gallery[car.galleryIndex]}
                 title={title}
                 price={formatAmount(price)}
                 year={year}
@@ -666,14 +639,6 @@ const page = () => {
                     <option className='text-base-content bg-black'>Red</option>
                     <option className='text-base-content bg-black'>Black</option>
                     <option className='text-base-content bg-black'>White</option>
-                    <option className='text-base-content bg-black'>Silver</option>
-                    <option className='text-base-content bg-black'>Blue</option>
-                    <option className='text-base-content bg-black'>Gray</option>
-                    <option className='text-base-content bg-black'>Green</option>
-                    <option className='text-base-content bg-black'>Yellow</option>
-                    <option className='text-base-content bg-black'>Brown</option>
-                    <option className='text-base-content bg-black'>Orange</option>
-
             </select>
 
             </div>
@@ -725,8 +690,11 @@ const page = () => {
         <div className='relative'>
           <span className='label-text-alt'>Seller Comments</span>
           <textarea className="textarea bg-primary w-full min-h-64" 
-          placeholder="Enter Details"onChange={(e) =>  setSellerComments( e.target.value)}>
-
+          placeholder="Enter Details"onChange={(e) => {
+              const value = e.target.value.replace(/\n/g, '<br>');
+              setSellerComments(value);
+          }} value={sellerComments}>
+            
           </textarea>
 
         </div>

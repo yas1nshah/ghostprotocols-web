@@ -3,6 +3,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import team from '@/static-files/team'
 
+export const metadata = {
+  title: "About Us - The Ghostly Journey.",
+  description: "It wasn't easy to reach where we are, but here something we can tell..",
+
+};
+
 const AboutUs = () => {
   return (
     <main className="main p-2">
@@ -69,7 +75,7 @@ const AboutUs = () => {
               team.map((member, index)=>(
                 <div key={index} className="text-center bg-primary-light dark:bg-primary p-4 rounded-xl">
                   <div className="avatar">
-                    <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <div className="w-24 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
                       <Image src={`/media/team${member.dp}`} width={100} height={100} alt={`${member.name}'s profile photo`}/>
                     </div>
                   </div>

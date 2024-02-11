@@ -30,7 +30,7 @@ const CarCard = (params) => {
           max-w-64 rounded-xl overflow-hidden dark:text-white text-nowrap hover:text-wrap
           h-52 md:h-64">
         <div className="w-full h-1/2  img bg-black">
-            <Image className="w-full h-full object-cover  rounded-t-xl" src={`https://images.tixy.pk/${imgs}`} width={250} height={150}/>
+            <Image className="w-full h-full object-cover  rounded-t-xl" src={`https://images.ghostprotocols.pk${imgs}`} width={250} height={150}/>
         </div>
         
         <div className="h-1/2 w-full px-2 py-2 flex flex-col justify-evenly">

@@ -10,7 +10,7 @@ export async function search(keyword) {
 
   // Return the first 10 matches
   const first10Matches = filteredModels.slice(0, 10);
-
+  console.log("server")
   return first10Matches;
 }
 

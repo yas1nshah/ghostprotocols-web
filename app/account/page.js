@@ -4,6 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import urls from '@/static-files/urls';
 import formatTimeDifference from '@/utils/format-date';
+import { useRouter } from 'next/navigation';
+
+
 
 const getPlan = (limit)=>{
   if(limit < 2)
@@ -49,8 +52,15 @@ async function getData(apikey) {
 
 const Page = () => {
   const [user, setUser] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
+    const status = localStorage.getItem("authenticated");
+    if (status === "false" || !status)
+    {
+      router.replace("/account/login")
+    }
+
     const apikey = localStorage.getItem('jwtAccessToken');
     if (apikey) {
       getData(apikey)
@@ -86,7 +96,7 @@ const Page = () => {
         
         <div className="avatar">
           <div className="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <img src="/profile.png" />
           </div>
         </div>
 
@@ -141,6 +151,17 @@ const Page = () => {
                     <h3 className="text-secondary text-xs hidden md:inline">GET THEM NOW</h3>
                     <h2 className="font-medium text-base md:text-lg self-start">GP Services</h2>
                     <p className=" text-sm hidden md:inline">Check GP Services</p>
+                  </div>
+                  <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={`/media/services/services.webp`} />
+                </Link>
+                <Link href={"/account/upgrade"}  className="bg-primary-light dark:bg-primary hover:bg-secondary hover:bg-opacity-25 dark:hover:bg-secondary dark:hover:bg-opacity-10 transition-all cursor-pointer 
+                            flex justify-between p-4 rounded-xl
+                            flex-col items-center
+                            md:flex-row h-32">
+                  <div className="text-wrap order-2  w-full md:order-1">
+                    <h3 className="text-secondary text-xs hidden md:inline">UPGRADE ACCOUNT</h3>
+                    <h2 className="font-medium text-base md:text-lg self-start">Ghost Subscription</h2>
+                    <p className=" text-sm hidden md:inline">Get more Ad Limit and Featured Listings</p>
                   </div>
                   <Image className="w-2/3 h-auto  order-1 md:w-auto md:h-full md:order-2" width={200} height={100} src={`/media/services/services.webp`} />
                 </Link>

@@ -5,7 +5,7 @@ const menu = [
     },
     {
         "name": "GP Cars",
-        "link" : "/inventory"
+        "link" : "/search?adType=ghost-yard"
     },
     {
         "name": "Add Car",

@@ -6,6 +6,23 @@ import urls from "@/static-files/urls";
 import formatTimeDifference from "@/utils/format-date";
 import formatAmount from "@/utils/foramt-price";
 
+export async function generateMetadata(
+  { params, searchParams }
+) {
+
+  const [titleBread, id] = params.slug;
+  let title = `${titleBread.replace(/-/g, " ")} for Sale in Pakistan`
+  let desc = `Buy ${title} in best price only at Ghost Protocols. Find your Next Car or Post Your Car for FREE.`
+  
+  
+ 
+  return {
+    title: title,
+    description: desc
+    
+  }
+}
+
 async function getData(id) {
   const res = await fetch(`${urls.APIURL}/cardetails/${id}`,{ next: { revalidate: 5 } })
 
@@ -178,6 +195,12 @@ export default async function Home({params}) {
           <hr className="opacity-100 dark:opacity-15"/>
 
           <div className="detailed-ov">
+            <h4 className="detailed-ov-key">Transmission</h4>
+            <h4 className=" detailed-ov-value ">{transmission? "Automatic" : "Manual"}</h4>
+          </div>
+          <hr className="opacity-100 dark:opacity-15"/>
+
+          <div className="detailed-ov">
             <h4 className="detailed-ov-key">Uploaded</h4>
             <h4 className=" detailed-ov-value ">{formatTimeDifference(date)}</h4>
           </div>
@@ -197,7 +220,7 @@ export default async function Home({params}) {
           <p className="md:text-sm text-xs">Discover your car's secrets with our inspections.</p>
           <button className="btn bg-primary-light dark:bg-primary mt-2 text-xs">Request Inspection</button>
         </div>
-        <Image className="w-1/3 md:w-1/4" width={300} height={300} src={"/inspection.webp"} />
+        <Image className="w-1/3 md:w-1/4" width={300} height={300} src={"/media/services/inspection.webp"} />
       </div>
       {/* Inspection */}
 
@@ -207,7 +230,7 @@ export default async function Home({params}) {
         <div className="chat chat-start">
         <div className="chat-image avatar">
           <div className="w-10 rounded-full">
-            <Image width={100} height={100} alt="Seller Profile Pic" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"  />
+            <Image width={100} height={100} alt="Seller Profile Pic" src="/profile.png"  />
           </div>
         </div>
         <div className="chat-header">
@@ -222,7 +245,7 @@ export default async function Home({params}) {
         <div className="chat chat-end">
           <div className="chat-image avatar">
             <div className="w-10 rounded-full">
-              <img alt="Tailwind CSS chat bubble component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img alt="Tailwind CSS chat bubble component" src="/profile.png" />
             </div>
           </div>
           <div className="chat-header">
@@ -272,7 +295,7 @@ export default async function Home({params}) {
         </div>
         
         <div className="stat">
-        <button className="btn text-white w-full my-1 bg-primary-light dark:bg-primary">Seller Phone</button>
+        <button className="btn text-white w-full my-1 bg-primary-light dark:bg-primary"><Link href={`https://wa.me/${seller.phone}`} target="_blakn">Seller Phone</Link></button>
         <button button className="btn text-white w-full my-1 bg-secondary">Buy it For Me</button>
         </div>
         
@@ -283,7 +306,7 @@ export default async function Home({params}) {
       <div className="p-2 my-4 bg-primary-light dark:bg-primary rounded-xl text-center py-4">
         <div className="avatar block text-center">
           <div className="my-4 p-0 mx-auto w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <img src="/profile.png" />
           </div>
           <h4 className="text-base font-semibold">{seller.f_name}</h4>
           <h4 className="text-sm">{seller.address}</h4>
@@ -304,9 +327,9 @@ export default async function Home({params}) {
     </div>
     </div>
 
-    <div className="Similar-Cars my-5 py-5">
+    {/* <div className="Similar-Cars my-5 py-5">
         <h2 className="text-xl my-5 font-semibold">Similar Cars</h2>
-    </div>
+    </div> */}
 
     
     

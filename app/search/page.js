@@ -6,6 +6,37 @@ import CarResult from '@/components/search/carResult';
 import ActiveFilters from '@/components/search/ActiveFilters';
 import Pagination from '@/components/search/Pagination';
 
+// export const metadata = {
+//   title: "Buy & Sell Cars in Pakistan - Get Your Ride Now.",
+//   description: "Proudly providing unusual Car Needs in Pakistan. Buy & Sell Cars. List Your Car Now and let the Ghosts Work.",
+
+// };
+export async function generateMetadata(
+  { params, searchParams }
+) {
+
+  const {make, model , keyword} = searchParams;
+  let title
+  let desc
+  
+  if(make && model)
+  {
+     title = `${make} ${model} for Sale in Pakistan`
+     desc = `Find the best ${make} ${model} for Sale in Pakistan. Ghost Protocols offers best car Listings for ${make} ${model}. Post your Car for FREE at Ghostprotocols Now.`
+  }
+  else{
+     title = `${keyword} for Sale in Pakistan`
+     desc = `Find the best ${keyword}for Sale in Pakistan. Ghost Protocols offers best car Listings for ${keyword}. Post your Car for FREE at Ghostprotocols Now.`
+
+  }
+ 
+  return {
+    title: title,
+    description: desc
+    
+  }
+}
+
 const SearchPage = async ({ params, searchParams }) => {
   const {make, model , keyword, yearFrom, yearTo, priceFrom, priceTo, color, transmission, bodyType, adType, page  } = searchParams;
 

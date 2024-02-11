@@ -46,9 +46,10 @@ const CarResult = async (params) => {
     <>
     {
         cars.length != 0 ?
-        cars.map((car)=>(
+        cars.map((car, index)=>(
           <CarCard
-            img=""
+            key2={index}
+            img={`https://images.ghostprotocols.pk${car.gallery[car.galleryIndex]}`}
             id={car.stockid}
             title={car.title}
             price={formatAmount(car.price)}

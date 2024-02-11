@@ -11,14 +11,15 @@ import Link from 'next/link'
 function Hero() {
 
     const images = [
-        "/cover.png",
-        "/cover.png",
+        "/media/covers/cover1.webp",
+        "/media/covers/cover2.webp",
     ]
+ 
   const [menu, setMenu] = useState()
 
   return (
   
-    <div id='hero' className='mx-2'>
+    <div id='hero' className={`mx-2`}>
         
       <div id='hero-container' className='flex flex-wrap md:flex-nowrap gap-2'>
         <div id='categories-filter' className="collapse  bg-primary-light dark:bg-primary collapse-plus my-2 flex-shrink-0

@@ -5,10 +5,10 @@ import Link from 'next/link'
 const CarCard = (params) => {
   const link = params.title.replace(/ /g, "-")
   return (
-    <Link  href={`/inventory/${link}/${params.id}`} className={`dark:bg-primary ${params.featured && "border-2 border-secondary"} bg-primary h-32 md:h-40 md:px-2  flex rounded-xl dark:text-white text-nowrap hover:text-wrap`}>
+    <Link key={params.key2}  href={`/inventory/${link}/${params.id}`} className={`dark:bg-primary ${params.featured && "border-2 border-secondary"} bg-primary h-32 md:h-40 md:px-2  flex rounded-xl dark:text-white text-nowrap hover:text-wrap`}>
           
       <div className='w-1/4 md:px-2 md:py-3 h-full flex-shrink-0 flex-grow-0'>
-        <Image draggable="false" className="w-full h-full object-cover  rounded-xl" src={"https://images.tixy.pk/images/Toyota_Camry_G_LIMITED_EDITION_2016-16-1.jpg"} width={250} height={150}/>
+        <Image draggable="false" className="w-full h-full object-cover  rounded-xl" src={`${params.img}`} width={250} height={150}/>
       </div>
       <div className='w-2/4 flex-shrink-0 p-4 flex-grow overflow-hidden'>
         <div className="h-full flex flex-col justify-between">

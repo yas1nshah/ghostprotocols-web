@@ -4,6 +4,11 @@ import Link from 'next/link'
 import formatAmount from '@/utils/foramt-price'
 import formatTimeDifference from '@/utils/format-date'
 
+export const metadata = {
+  title: "Demand List - Hot Deals for Required Cars.",
+  description: "We have alot of demand for Cars. Work with us to fulfil it and Sell Your car at Good Rated.",
+
+};
 
 const getData = async (page) => {
     const url = (`${urls.APIURL}/demand-list?page=${page}`)
