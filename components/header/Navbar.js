@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import menu from '@/static-files/menu'
 import { useRouter } from 'next/navigation'
-import SearchBar from './SearchBar'
+import SearchBar from '@/components/header/SearchBarr'
 
 
 
