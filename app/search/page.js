@@ -66,12 +66,12 @@ const SearchPage = async ({ params, searchParams }) => {
             
         </section>
 
-        <section className="content md:w-3/4">
+        <section className="content flex-grow md:w-3/4">
         <p className='px-2 text-sm md:text-base'>Active Filters:</p>
           <div id='active-filters' className="filters flex gap-2 p-2 overflow-x-scroll">
             <ActiveFilters/> 
           </div>
-          <div className="overflow-hidden grid gap-4 grid-cols-1 flex-grow bg-primary-light dark:bg-primary m-2 py-4 px-2 md:px-4 rounded-xl">
+          <div className="overflow-hidden grid gap-4 grid-cols-1 flex-grow  md:bg-primary-light md:dark:bg-primary m-2 py-4 px-0 md:px-4 rounded-xl">
               <CarResult keyword = {keyword} yearFrom = {yearFrom} yearTo={yearTo}
             priceFrom = {priceFrom} priceTo={priceTo} color={color}
             transmission={transmission} bodyType={bodyType} adType={adType} page={page} 
